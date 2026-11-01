@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  name      String
+  sortOrder Int        @default(0)
+  items     MenuItem[]
+}
+
+model MenuItem {
+  id            String       @id @default(uuid())
+  category      Category     @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  name          String
+  description   String?
+  imageUrl      String?
+  basePrice     Int // Satang
+  isActive      Boolean      @default(true)
+  manualSoldOut Boolean      @default(false)
+  sortOrder     Int          @default(0)
+  recipes       RecipeLine[]
+  optionGroups  OptionGroup[]
+}
+
+model Ingredient {
+  id              String          @id @default(uuid())
+  name            String
+  unit            String // g, ml, pcs
+  stockQty        Float           @default(0)
+  minLevel        Float           @default(0)
+  lowAlertActive  Boolean         @default(false)
+  costPerUnit     Int?
+  updatedAt       DateTime        @updatedAt
+  recipeLines     RecipeLine[]
+  choiceDeltas    ChoiceRecipeDelta[]
+  stockMovements  StockMovement[]
+}
+
+model RecipeLine {
+  id           String     @id @default(uuid())
+  menuItem     MenuItem   @relation(fields: [menuItemId], references: [id])
+  menuItemId   String
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+  quantity     Float
+}
+
+model OptionGroup {
+  id         String         @id @default(uuid())
+  menuItem   MenuItem       @relation(fields: [menuItemId], references: [id])
+  menuItemId String
+  name       String
+  type       String // SINGLE, MULTI
+  required   Boolean        @default(false)
+  minSelect  Int?
+  maxSelect  Int?
+  choices    OptionChoice[]
+}
+
+model OptionChoice {
+  id           String              @id @default(uuid())
+  group        OptionGroup         @relation(fields: [groupId], references: [id])
+  groupId      String
+  name         String
+  priceDelta   Int                 @default(0)
+  isDefault    Boolean             @default(false)
+  recipeDeltas ChoiceRecipeDelta[]
+}
+
+model ChoiceRecipeDelta {
+  id            String       @id @default(uuid())
+  choice        OptionChoice @relation(fields: [choiceId], references: [id])
+  choiceId      String
+  ingredient    Ingredient   @relation(fields: [ingredientId], references: [id])
+  ingredientId  String
+  quantityDelta Float
+}
+
+model StockMovement {
+  id           String     @id @default(uuid())
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String
+  type         String // ORDER, ORDER_CANCEL_RESTORE, REFILL, ADJUSTMENT, WASTE
+  quantity     Float
+  balanceAfter Float
+  orderId      String?
+  note         String?
+  createdBy    String?
+  createdAt    DateTime   @default(now())
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNo     Int // Daily running number
+  tableNo     String
+  status      String // RECEIVED, PREPARING, SERVED, CANCELED
+  note        String?
+  totalPrice  Int
+  cancelReason String?
+  createdAt   DateTime    @default(now())
+  preparingAt DateTime?
+  servedAt    DateTime?
+  items       OrderItem[]
+}
+
+model OrderItem {
+  id                  String  @id @default(uuid())
+  order               Order   @relation(fields: [orderId], references: [id])
+  orderId             String
+  menuItemId          String
+  nameSnapshot        String
+  unitPriceSnapshot   Int
+  quantity            Int
+  selectedOptionsJson String // JSON snapshot of options
+  note                String?
+}
+
+model StoreConfig {
+  id             Int      @id @default(1)
+  name           String   @default("[Porto Coffee]")
+  status         String // OPEN, CLOSED, HOLIDAY
+  announcement   String?
+  scheduleText   String?
+  holidayNote    String?
+  acceptOrders   Boolean  @default(true)
+  alertWebhookUrl String?
+  updatedAt      DateTime @updatedAt
+}
+
+model Promotion {
+  id            String    @id @default(uuid())
+  title         String
+  description   String?
+  imageUrl      String?
+  discountType  String // PERCENT, FIXED, NONE
+  discountValue Float?
+  startsAt      DateTime?
+  endsAt        DateTime?
+  isActive      Boolean   @default(true)
+}
+
+model TableToken {
+  tableNo String @id
+  token   String @unique
+}
+
+model StaffUser {
+  id           String @id @default(uuid())
+  name         String @unique
+  role         String // ADMIN, STAFF
+  passwordHash String
+}

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="100%" height="100%">
+  <!-- Background warm circle -->
+  <circle cx="100" cy="100" r="92" fill="#F4EFEB" stroke="#5A483E" stroke-width="4"/>
+  
+  <!-- Spiky / Curly Messy Hair on Top -->
+  <path d="M 60,65 Q 70,30 90,45 Q 100,20 115,40 Q 135,25 145,55 Q 165,60 155,80 Q 170,95 150,105 Z" fill="#5A483E" stroke="#3E2723" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Round Head -->
+  <circle cx="100" cy="105" r="48" fill="#FFFDF9" stroke="#3E2723" stroke-width="4"/>
+
+  <!-- Winking Left Eye (Cute wink curve) -->
+  <path d="M 78,98 Q 85,92 92,98" fill="none" stroke="#3E2723" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Open Happy Right Eye / Wink or Dot -->
+  <circle cx="120" cy="96" r="5" fill="#3E2723"/>
+
+  <!-- Cute Rosy Cheeks -->
+  <ellipse cx="74" cy="112" rx="7" ry="4" fill="#E8A598" opacity="0.6"/>
+  <ellipse cx="126" cy="112" rx="7" ry="4" fill="#E8A598" opacity="0.6"/>
+
+  <!-- Wide Open Smiling Mouth -->
+  <path d="M 88,118 Q 100,135 112,118 Z" fill="#3E2723"/>
+  <path d="M 94,123 Q 100,130 106,123" fill="none" stroke="#FFF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Both arms raised upward with hands/fists open -->
+  <!-- Left Arm Raised -->
+  <path d="M 60,135 Q 35,115 30,95" fill="none" stroke="#3E2723" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="28" cy="90" r="7" fill="#FFFDF9" stroke="#3E2723" stroke-width="3"/>
+
+  <!-- Right Arm Raised -->
+  <path d="M 140,135 Q 165,115 170,95" fill="none" stroke="#3E2723" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="172" cy="90" r="7" fill="#FFFDF9" stroke="#3E2723" stroke-width="3"/>
+
+  <!-- T-shirt Body -->
+  <path d="M 62,145 C 62,135 138,135 138,145 L 152,185 C 152,188 148,192 144,192 L 56,192 C 52,192 48,188 48,185 Z" fill="#5A483E" stroke="#3E2723" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- Handwritten Text "Porto coffee" on T-shirt -->
+  <text x="100" y="170" font-family="'Plus Jakarta Sans', 'Inter', sans-serif" font-size="15" font-weight="800" fill="#F4EFEB" text-anchor="middle" font-style="italic" letter-spacing="0.5">Porto coffee</text>
+</svg>

@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #F9F6F0;
+    color: #3E2723;
+    font-family: 'Plus Jakarta Sans', Inter, Prompt, system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
+  }
+}
