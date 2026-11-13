@@ -230,7 +230,7 @@ export const MenuPage: React.FC = () => {
             ) || categories[tab.id - 1] || categories[0];
 
             const catId = matchedCat ? matchedCat.id : tab.id;
-            const isActive = selectedCategory === catId;
+            const isActive = selectedCategory === catId || selectedCategory === tab.id;
 
             return (
               <button
@@ -238,13 +238,13 @@ export const MenuPage: React.FC = () => {
                 onClick={() => {
                   if (matchedCat) {
                     setSelectedCategory(matchedCat.id);
-                  } else if (categories.length > 0) {
-                    setSelectedCategory(categories[0].id);
+                  } else {
+                    setSelectedCategory(tab.id);
                   }
                   setSliderIndex(0);
                 }}
-                className={`pb-1 text-sm sm:text-base font-bold transition-all relative whitespace-nowrap px-3 py-2 rounded-xl ${
-                  isActive ? 'bg-[#3e2723] text-white shadow-md' : 'text-[#5c3a31] hover:bg-[#F4EFEB]'
+                className={`pb-1 text-sm sm:text-base font-bold transition-all relative whitespace-nowrap px-4 py-2 rounded-xl ${
+                  isActive ? 'bg-[#3c2415] text-white shadow-md' : 'bg-transparent text-[#3c2415] hover:bg-[#3c2415]/10'
                 }`}
               >
                 {tab.label}
