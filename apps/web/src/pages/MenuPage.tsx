@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+  import React, { useEffect, useState } from 'react';
 import { ApiClient } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { ItemModal } from '../components/ItemModal';
@@ -7,7 +7,7 @@ export const MenuPage: React.FC = () => {
   const [menuData, setMenuData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | string>(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [sliderIndex, setSliderIndex] = useState(0);
@@ -181,7 +181,7 @@ export const MenuPage: React.FC = () => {
 
   if (!menuData) return null;
 
-  // Tabs mapping keywords to categories
+  // Tabs mapping keywords to categories with exact backend category matching or fallback
   const tabs = [
     { id: 1, label: 'เมนูยอดนิยม', keyword: 'Popular' },
     { id: 2, label: 'เมนูกาแฟ', keyword: 'Coffee' },
@@ -193,12 +193,20 @@ export const MenuPage: React.FC = () => {
   const categories = menuData.categories || [];
 
   // Find the exact category corresponding to selectedCategory
-  let currentCategory = categories.find((cat: any) => cat.id === selectedCategory);
+  let currentCategory = categories.find((cat: any) => 
+    cat.id === selectedCategory || 
+    cat.category === selectedCategory ||
+    cat.name?.toLowerCase() === String(selectedCategory).toLowerCase()
+  );
+
   if (!currentCategory) {
     currentCategory = categories[0] || { name: 'Menu', items: [] };
   }
 
-  const categoryItems = currentCategory?.items || [];
+  const allProducts = categories.flatMap((cat: any) => cat.items || []);
+  const categoryItems = (selectedCategory === 'all' || selectedCategory === 'popular' || selectedCategory === 1) && !categories.some((c: any) => c.category === 'popular' || c.id === 1)
+    ? allProducts
+    : (currentCategory?.items && currentCategory.items.length > 0 ? currentCategory.items : (categories[0]?.items || []));
 
   const nextSlider = () => {
     setSliderIndex((prev) => (prev + 1) % Math.max(1, categoryItems.length));
