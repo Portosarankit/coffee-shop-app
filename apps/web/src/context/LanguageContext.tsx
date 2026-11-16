@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { en, th } from '@coffee-shop/shared';
+import { en, th } from '../types/shared';
 
 type Language = 'en' | 'th';
 
