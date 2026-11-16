@@ -90,27 +90,39 @@ async function main() {
     data: { name: 'Cream Cheese', unit: 'g', stockQty: 5000, minLevel: 1000, costPerUnit: 40 },
   });
 
-  // 4. Categories
-  const catCoffee = await prisma.category.create({ 
+  // 4. Categories (Exactly matching the 5 tabs in MenuPage: Popular, Coffee, Tea, Chocolate & Milk, Smoothie & Bakery)
+  const catPopular = await prisma.category.create({ 
     data: { 
-      name: 'Coffee (กาแฟสด)', 
+      name: 'Popular Signature (เมนูยอดนิยม)', 
       sortOrder: 1
     } 
   });
-  const catNonCoffee = await prisma.category.create({ 
+  const catCoffee = await prisma.category.create({ 
     data: { 
-      name: 'Non-Coffee & Tea (ชาและเครื่องดื่ม)', 
+      name: 'Coffee (เมนูกาแฟ)', 
       sortOrder: 2
+    } 
+  });
+  const catTea = await prisma.category.create({ 
+    data: { 
+      name: 'Tea (เมนูชา)', 
+      sortOrder: 3
+    } 
+  });
+  const catChocoMilk = await prisma.category.create({ 
+    data: { 
+      name: 'Chocolate & Milk (เมนูช็อกโกแลตและนม)', 
+      sortOrder: 4
     } 
   });
   const catBakery = await prisma.category.create({ 
     data: { 
-      name: 'Bakery & Desserts (เบเกอรีและของหวาน)', 
-      sortOrder: 3
+      name: 'Smoothie & Bakery (เมนูปั่นและเบเกอรี)', 
+      sortOrder: 5
     } 
   });
 
-  // Option Groups template for Drinks (Matching Prompt exact requirements: Sweetness 0%, 25%, 50%, 100%, 125%; Shots +15฿; Milk choices Whole, Oat, Soy, Almond; Temp Hot/Iced/Frappe)
+  // Option Groups template for Drinks
   const drinkOptionGroups = {
     create: [
       {
@@ -166,7 +178,49 @@ async function main() {
     ]
   };
 
-  // 5. Complete Menu Items Seeding (Exact pricing and high-res Unsplash images)
+  // --- 1. POPULAR SIGNATURE ---
+  const popularItems = [
+    { name: 'Porto Signature (พอร์โต ซิกเนเจอร์)', desc: 'Special blended coffee with secret caramel touch', price: 8500, beanQty: 18, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Young Coconut Coffee (กาแฟมะพร้าวอ่อน)', desc: 'Fresh coconut water topped with rich espresso shot', price: 8500, beanQty: 18, waterQty: 100, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Iced Thai Tea (ชาไทยเย็น)', desc: 'Traditional Thai milk tea with rich aroma', price: 7000, teaQty: 15, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Matcha Latte (มัทฉะลาเต้)', desc: 'Premium Japanese green tea with fresh milk', price: 8000, matchaQty: 6, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Premium Cocoa (โกโก้พรีเมียม)', desc: 'Rich and creamy dark cocoa', price: 7500, chocoQty: 50, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Butter Croissant (ครัวซองต์เนยสด)', desc: 'Flaky and buttery fresh croissant', price: 6500, flourQty: 100, butterQty: 50, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Basque Burnt Cheesecake (ชีสเค้กหน้าไหม้)', desc: 'Rich and creamy burnt Basque cheesecake', price: 11000, cheeseQty: 100, flourQty: 30, butterQty: 20, imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Traditional Brownie (บราวนี่ฉ่ำโบราณ)', desc: 'Fudgy and rich traditional chocolate brownie', price: 7000, flourQty: 50, butterQty: 40, chocoQty: 50, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Lemon Soda (มะนาวโซดา)', desc: 'Refreshing sparkling lemon soda', price: 6500, lemonQty: 1, waterQty: 150, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80' },
+  ];
+
+  for (let i = 0; i < popularItems.length; i++) {
+    const item = popularItems[i];
+    await prisma.menuItem.create({
+      data: {
+        categoryId: catPopular.id,
+        name: item.name,
+        description: item.desc,
+        basePrice: item.price,
+        imageUrl: item.imageUrl,
+        sortOrder: i + 1,
+        recipes: {
+          create: [
+            { ingredientId: beans.id, quantity: item.beanQty || 18 },
+            ...(item.waterQty ? [{ ingredientId: water.id, quantity: item.waterQty }] : []),
+            ...(item.milkQty ? [{ ingredientId: milk.id, quantity: item.milkQty }] : []),
+            ...(item.teaQty ? [{ ingredientId: teaLeaves.id, quantity: item.teaQty }] : []),
+            ...(item.matchaQty ? [{ ingredientId: matcha.id, quantity: item.matchaQty }] : []),
+            ...(item.chocoQty ? [{ ingredientId: chocolate.id, quantity: item.chocoQty }] : []),
+            ...(item.lemonQty ? [{ ingredientId: lemon.id, quantity: item.lemonQty }] : []),
+            ...(item.flourQty ? [{ ingredientId: flour.id, quantity: item.flourQty }] : []),
+            ...(item.butterQty ? [{ ingredientId: butter.id, quantity: item.butterQty }] : []),
+            ...(item.cheeseQty ? [{ ingredientId: cheese.id, quantity: item.cheeseQty }] : []),
+          ]
+        },
+        optionGroups: drinkOptionGroups,
+      }
+    });
+  }
+
+  // --- 2. COFFEE ---
   const coffeeItems = [
     { name: 'Espresso (เอสเพรสโซ่)', desc: 'Rich and bold single origin shot', price: 6000, beanQty: 18, waterQty: 30, imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=800&q=80' },
     { name: 'Americano (อเมริกาโน่)', desc: 'Espresso with filtered water', price: 6500, beanQty: 18, waterQty: 120, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80' },
@@ -200,20 +254,20 @@ async function main() {
     });
   }
 
-  // --- NON-COFFEE & TEA ---
-  const nonCoffeeItems = [
+  // --- 3. TEA ---
+  const teaItems = [
     { name: 'Matcha Latte (มัทฉะ ลาเต้)', desc: 'Premium Japanese green tea with milk', price: 8000, matchaQty: 6, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80' },
     { name: 'Thai Milk Tea (ชาไทยนมสด)', desc: 'Traditional rich Thai tea with sweetened milk', price: 7000, teaQty: 15, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80' },
-    { name: 'Cocoa / Chocolate (โกโก้ / ช็อกโกแลต)', desc: 'Rich velvety Dutch cocoa', price: 7000, chocoQty: 50, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80' },
-    { name: 'Fresh Milk (นมสด)', desc: 'Warm or iced fresh milk', price: 6000, milkQty: 200, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80' },
     { name: 'Lemon Tea (ชามะนาว)', desc: 'Refreshing black tea with fresh squeezed lemon', price: 6500, teaQty: 10, lemonQty: 1, waterQty: 150, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Peach Jasmine Tea (ชามะลิพีช)', desc: 'Fragrant jasmine tea infused with sweet peach', price: 7000, teaQty: 10, waterQty: 150, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Hojicha Tea (ชาโฮจิฉะ)', desc: 'Roasted Japanese green tea', price: 8000, matchaQty: 6, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?auto=format&fit=crop&w=800&q=80' },
   ];
 
-  for (let i = 0; i < nonCoffeeItems.length; i++) {
-    const item = nonCoffeeItems[i];
+  for (let i = 0; i < teaItems.length; i++) {
+    const item = teaItems[i];
     await prisma.menuItem.create({
       data: {
-        categoryId: catNonCoffee.id,
+        categoryId: catTea.id,
         name: item.name,
         description: item.desc,
         basePrice: item.price,
@@ -223,7 +277,6 @@ async function main() {
           create: [
             ...(item.matchaQty ? [{ ingredientId: matcha.id, quantity: item.matchaQty }] : []),
             ...(item.teaQty ? [{ ingredientId: teaLeaves.id, quantity: item.teaQty }] : []),
-            ...(item.chocoQty ? [{ ingredientId: chocolate.id, quantity: item.chocoQty }] : []),
             ...(item.milkQty ? [{ ingredientId: milk.id, quantity: item.milkQty }] : []),
             ...(item.lemonQty ? [{ ingredientId: lemon.id, quantity: item.lemonQty }] : []),
             ...(item.waterQty ? [{ ingredientId: water.id, quantity: item.waterQty }] : []),
@@ -234,7 +287,37 @@ async function main() {
     });
   }
 
-  // --- BAKERY & DESSERTS ---
+  // --- 4. CHOCOLATE & MILK ---
+  const chocoMilkItems = [
+    { name: 'Rich Cocoa (โกโก้เข้มข้น)', desc: 'Rich and creamy dark cocoa with fresh milk', price: 7500, chocoQty: 50, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Hokkaido Fresh Milk (นมสดฮอกไกโด)', desc: 'Pure Hokkaido fresh milk', price: 6000, milkQty: 200, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Pink Milk (นมชมพู)', desc: 'Sweet Salas syrup with fresh milk', price: 6000, milkQty: 200, imageUrl: 'https://images.unsplash.com/photo-1579888944782-cb5f1db26005?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Caramel Fresh Milk (นมสดคาราเมล)', desc: 'Fresh milk with sweet caramel drizzle', price: 7000, milkQty: 200, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80' },
+    { name: 'Mint Chocolate (ช็อกโกแลตมิ้นท์)', desc: 'Rich chocolate with refreshing mint', price: 8000, chocoQty: 50, milkQty: 150, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6919f80753b?auto=format&fit=crop&w=800&q=80' },
+  ];
+
+  for (let i = 0; i < chocoMilkItems.length; i++) {
+    const item = chocoMilkItems[i];
+    await prisma.menuItem.create({
+      data: {
+        categoryId: catChocoMilk.id,
+        name: item.name,
+        description: item.desc,
+        basePrice: item.price,
+        imageUrl: item.imageUrl,
+        sortOrder: i + 1,
+        recipes: {
+          create: [
+            ...(item.chocoQty ? [{ ingredientId: chocolate.id, quantity: item.chocoQty }] : []),
+            ...(item.milkQty ? [{ ingredientId: milk.id, quantity: item.milkQty }] : []),
+          ]
+        },
+        optionGroups: drinkOptionGroups,
+      }
+    });
+  }
+
+  // --- 5. SMOOTHIE & BAKERY ---
   const bakeryItems = [
     { name: 'Butter Croissant (ครัวซองต์เนยสด)', desc: 'Flaky, buttery French pastry', price: 6500, flourQty: 100, butterQty: 50, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=800&q=80' },
     { name: 'Almond Croissant (ครัวซองต์อัลมอนด์)', desc: 'Croissant filled with sweet almond cream', price: 8000, flourQty: 100, butterQty: 50, imageUrl: 'https://images.unsplash.com/photo-1623341214825-9f4f963727da?auto=format&fit=crop&w=800&q=80' },

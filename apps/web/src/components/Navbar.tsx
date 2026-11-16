@@ -48,8 +48,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenMember }) => {
 
   return (
     <>
-      {/* 🟢 1. Floating Capsule Container */}
-      <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl bg-[#EBE5DF]/90 backdrop-blur-md rounded-full px-6 py-3 shadow-lg flex items-center justify-between border border-white/40">
+      {/* 🟢 1. Liquid Glass Capsule Container */}
+      <header className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl liquid-glass rounded-full px-6 py-3 flex items-center justify-between">
         {/* Left Side: Character Logo + Clean dark brown text typography "Porto Coffee" */}
         <div className="flex items-center space-x-3 sm:space-x-4">
           <Link
@@ -287,39 +287,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenMember }) => {
         </div>
       )}
 
-      {/* 4. Branch Locator Modal */}
-      {activeModal === 'location' && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-[#f3eee2] relative">
-            <button
-              onClick={() => setActiveModal(null)}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 font-bold"
-            >
-              ✕
-            </button>
-            <div className="text-center mb-6">
-              <h3 className="text-2xl font-black text-[#3e2723]">สาขา Porto Coffee</h3>
-              <p className="text-sm text-gray-600 mt-1">ค้นหาสาขาใกล้บ้านคุณ</p>
-            </div>
-            <div className="space-y-3 mb-6">
-              <div className="bg-[#f7f2ea] p-4 rounded-2xl border border-[#e6dcce]">
-                <h4 className="font-bold text-[#3e2723] text-sm">สาขาหลัก สุขุมวิท 24</h4>
-                <p className="text-xs text-gray-600 mt-1">เปิดบริการทุกวัน 08:00 - 17:00 น.</p>
-              </div>
-              <div className="bg-[#f7f2ea] p-4 rounded-2xl border border-[#e6dcce]">
-                <h4 className="font-bold text-[#3e2723] text-sm">สาขา อารีย์ พหลโยธิน 7</h4>
-                <p className="text-xs text-gray-600 mt-1">เปิดบริการทุกวัน 07:30 - 18:00 น.</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setActiveModal(null)}
-              className="w-full bg-[#3e2723] text-white py-3 rounded-xl font-bold text-sm hover:bg-[#2c1810]"
-            >
-              ตกลง
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* 5. Quick Search Overlay */}
       {activeModal === 'search' && (
@@ -399,7 +367,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCart, onOpenMember }) => {
                   onClick={() => { setMobileMenuOpen(false); setActiveModal('location'); }}
                   className="w-full text-left p-3 rounded-xl hover:bg-[#f7f2ea] transition-colors"
                 >
-                  สาขาและที่ตั้ง
+                  จุดบริการ
                 </button>
                 <button
                   onClick={() => { 

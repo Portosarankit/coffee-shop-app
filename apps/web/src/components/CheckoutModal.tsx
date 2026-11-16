@@ -215,17 +215,9 @@ export const CheckoutModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
               )}
 
               {orderType === 'PICKUP' && (
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">📍 เลือกสาขาที่มารับ (Select Branch)</label>
-                  <select
-                    value={selectedBranch}
-                    onChange={(e) => setSelectedBranch(e.target.value)}
-                    className="w-full rounded-xl border border-gray-300 p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#3e2723] bg-white font-semibold text-[#3e2723]"
-                  >
-                    <option value="สาขาหลัก สุขุมวิท 24">สาขาหลัก สุขุมวิท 24 (เปิด 08:00 - 17:00)</option>
-                    <option value="สาขา อารีย์ พหลโยธิน 7">สาขา อารีย์ พหลโยธิน 7 (เปิด 07:30 - 18:00)</option>
-                    <option value="สาขา สีลมคอมเพล็กซ์">สาขา สีลมคอมเพล็กซ์ (เปิด 08:00 - 19:00)</option>
-                  </select>
+                <div className="bg-[#f7f2ea] p-4 rounded-2xl border border-[#e6dcce] text-center space-y-1">
+                  <h4 className="font-black text-[#3e2723] text-sm">รับที่หน้าร้าน (Store Pickup)</h4>
+                  <p className="text-xs text-gray-600">รับสินค้าได้ทันทีที่เคาน์เตอร์บาร์ Porto Coffee</p>
                 </div>
               )}
 

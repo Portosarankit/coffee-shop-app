@@ -1,4 +1,4 @@
-  import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ApiClient } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { ItemModal } from '../components/ItemModal';
@@ -181,19 +181,17 @@ export const MenuPage: React.FC = () => {
 
   if (!menuData) return null;
 
-  // Tabs mapping keywords to categories with exact backend category matching or fallback
   const tabs = [
-    { id: 1, label: 'เมนูยอดนิยม', keyword: 'Popular' },
-    { id: 2, label: 'เมนูกาแฟ', keyword: 'Coffee' },
-    { id: 3, label: 'เมนูชา', keyword: 'Tea' },
-    { id: 4, label: 'เมนูช็อกโกแลตและนม', keyword: 'Chocolate' },
-    { id: 5, label: 'เมนูปั่นและเบเกอรี', keyword: 'Smoothie' }
+    { id: 1, label: 'เมนูยอดนิยม', index: 0 },
+    { id: 2, label: 'เมนูกาแฟ', index: 1 },
+    { id: 3, label: 'เมนูชา', index: 2 },
+    { id: 4, label: 'เมนูช็อกโกแลตและนม', index: 3 },
+    { id: 5, label: 'เมนูปั่นและเบเกอรี', index: 4 }
   ];
 
   const categories = menuData.categories || [];
-
-  // Find the exact category corresponding to selectedCategory
-  let currentCategory = categories.find((cat: any) => 
+  const activeTabObj = tabs.find(t => t.id === selectedCategory) || tabs[0];
+  let currentCategory = categories[activeTabObj.index] || categories.find((cat: any) => 
     cat.id === selectedCategory || 
     cat.category === selectedCategory ||
     cat.name?.toLowerCase() === String(selectedCategory).toLowerCase()
@@ -203,10 +201,9 @@ export const MenuPage: React.FC = () => {
     currentCategory = categories[0] || { name: 'Menu', items: [] };
   }
 
-  const allProducts = categories.flatMap((cat: any) => cat.items || []);
-  const categoryItems = (selectedCategory === 'all' || selectedCategory === 'popular' || selectedCategory === 1) && !categories.some((c: any) => c.category === 'popular' || c.id === 1)
-    ? allProducts
-    : (currentCategory?.items && currentCategory.items.length > 0 ? currentCategory.items : (categories[0]?.items || []));
+  const categoryItems = currentCategory?.items && currentCategory.items.length > 0 
+    ? currentCategory.items 
+    : (categories[0]?.items || []);
 
   const nextSlider = () => {
     setSliderIndex((prev) => (prev + 1) % Math.max(1, categoryItems.length));
@@ -217,34 +214,104 @@ export const MenuPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-12 bg-[#F4EFEB] min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16 space-y-12 bg-[#F7F3EE] min-h-screen relative overflow-hidden">
       
-      {/* Category Sub-Header Navigation Tabs */}
-      <div className="flex justify-center overflow-x-auto no-scrollbar py-2">
-        <div className="flex space-x-2 sm:space-x-8 border-b border-[#EAE3DB] bg-white rounded-full shadow-sm px-6 py-2">
-          {tabs.map((tab) => {
-            const matchedCat = categories.find((c: any) => 
-              c.id === tab.id || 
-              c.name?.toLowerCase().includes(tab.keyword.toLowerCase()) || 
-              c.nameTh?.includes(tab.label)
-            ) || categories[tab.id - 1] || categories[0];
+      {/* Background Floating Decorative Elements */}
+      <div className="absolute top-16 left-6 w-16 h-16 pointer-events-none animate-float-slow z-10 opacity-80 hidden sm:block">
+        <div className="w-full h-full rounded-2xl liquid-glass flex items-center justify-center shadow-lg">
+          <span className="text-2xl">☕</span>
+        </div>
+      </div>
+      <div className="absolute top-32 right-8 w-14 h-14 pointer-events-none animate-float-fast z-10 opacity-80 hidden sm:block">
+        <div className="w-full h-full rounded-full liquid-glass flex items-center justify-center shadow-lg">
+          <span className="text-xl">🧋</span>
+        </div>
+      </div>
 
-            const catId = matchedCat ? matchedCat.id : tab.id;
-            const isActive = selectedCategory === catId || selectedCategory === tab.id;
+      {/* 1. "Love at First Sight" Asymmetric 2-Column Hero Section */}
+      <section className="relative rounded-3xl p-6 sm:p-12 overflow-hidden shadow-2xl border border-white/60 bg-gradient-to-tr from-[#D4A373]/30 via-[#F7F3EE] to-[#1E3A8A]/15 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        
+        {/* Left Column: Warm Typography & Deep Navy Blue CTA */}
+        <div className="space-y-6 z-10">
+          <div className="inline-flex items-center gap-2 bg-[#1E3A8A]/10 text-[#1E3A8A] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-xs">
+            <span>⭐ คาเฟ่พรีเมียมอันดับ 1</span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-black text-[#1E1E1E] tracking-tight leading-tight">
+            กาแฟพรีเมียม สั่งง่าย ส่งไว <br />
+            <span className="text-[#C68B59]">ปรับแต่งความหวานได้ตามใจคุณ</span>
+          </h1>
+          <p className="text-[#1E1E1E]/80 text-sm sm:text-base leading-relaxed font-medium">
+            สัมผัสรสชาติความหอมกลมกล่อมของเมล็ดกาแฟคั่วคัดพิเศษ ชาไทยแท้ และเบเกอรีอบสดใหม่ทุกวัน ส่งตรงถึงมือคุณอย่างรวดเร็ว
+          </p>
+          <div className="pt-2 flex flex-wrap gap-4">
+            <button
+              onClick={() => {
+                const el = document.getElementById('menu-showcase-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-[#1E3A8A] hover:bg-[#152e6d] text-white px-8 py-4 rounded-2xl font-black text-sm shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+            >
+              <span>เริ่มสั่งซื้อ (Explore Menu)</span>
+              <span>→</span>
+            </button>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent('open-member-modal'))}
+              className="bg-white/80 hover:bg-white text-[#1E1E1E] px-6 py-4 rounded-2xl font-bold text-sm shadow-sm transition-all border border-black/10"
+            >
+              สิทธิพิเศษสมาชิก
+            </button>
+          </div>
+        </div>
+
+        {/* Right Column: The "Wow" Visual Showcase with Liquid Glass Frame & Floating Badges */}
+        <div className="relative flex items-center justify-center p-6">
+          {/* Ambient Radial Glow Background */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#D4A373]/40 via-[#F7F3EE] to-[#1E3A8A]/20 rounded-3xl blur-2xl"></div>
+
+          {/* Liquid Glass Frame Container */}
+          <div className="relative w-72 h-80 sm:w-80 sm:h-96 rounded-3xl liquid-glass border border-white/80 shadow-2xl flex items-center justify-center p-6 transform hover:rotate-1 transition-transform duration-500">
+            
+            {/* Featured Iced Latte Photo */}
+            <img
+              src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&auto=format&fit=crop"
+              alt="Featured Iced Latte"
+              className="max-h-full max-w-full object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-500"
+            />
+
+            {/* Interactive Floating Glass Badges */}
+            <div className="absolute -top-4 -left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#1E3A8A] animate-float-slow hover:scale-105 transition-transform">
+              ⭐ เมนูแนะนำวันนี้
+            </div>
+
+            <div className="absolute -bottom-4 -right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#C68B59] animate-float-fast hover:scale-105 transition-transform">
+              🧊 เย็นชื่นใจ
+            </div>
+
+            <div className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#1E1E1E] animate-float-pulse hover:scale-105 transition-transform">
+              🍯 ปรับหวาน 0-100%
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      {/* 2. Liquid Glass Category Pill Tabs */}
+      <div id="menu-showcase-section" className="flex justify-center overflow-x-auto no-scrollbar py-2">
+        <div className="flex space-x-2 sm:space-x-4 liquid-glass rounded-full px-6 py-3 shadow-lg">
+          {tabs.map((tab) => {
+            const isActive = selectedCategory === tab.id;
 
             return (
               <button
                 key={tab.id}
                 onClick={() => {
-                  if (matchedCat) {
-                    setSelectedCategory(matchedCat.id);
-                  } else {
-                    setSelectedCategory(tab.id);
-                  }
+                  setSelectedCategory(tab.id);
                   setSliderIndex(0);
                 }}
-                className={`pb-1 text-sm sm:text-base font-bold transition-all relative whitespace-nowrap px-4 py-2 rounded-xl ${
-                  isActive ? 'bg-[#3c2415] text-white shadow-md' : 'bg-transparent text-[#3c2415] hover:bg-[#3c2415]/10'
+                className={`px-5 py-2.5 text-xs sm:text-sm font-black transition-all rounded-full whitespace-nowrap shadow-sm ${
+                  isActive 
+                    ? 'bg-[#1E3A8A] text-white shadow-[0_4px_20px_rgba(30,58,138,0.3)] scale-105' 
+                    : 'bg-white/60 text-[#1E1E1E] hover:bg-white border border-white/50'
                 }`}
               >
                 {tab.label}
@@ -269,9 +336,8 @@ export const MenuPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Carousel Container with 3D Beverage Showcase */}
+        {/* Carousel Container */}
         <div className="relative flex items-center justify-center py-6">
-          {/* Left Arrow */}
           <button
             onClick={prevSlider}
             className="absolute left-0 z-20 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 flex items-center justify-center text-[#3e2723] hover:bg-[#F4EFEB] transition-all -ml-2 sm:-ml-6"
@@ -282,7 +348,6 @@ export const MenuPage: React.FC = () => {
             </svg>
           </button>
 
-          {/* Carousel Items Horizontal Track */}
           <div className="w-full overflow-hidden px-4">
             <div 
               className="flex transition-transform duration-500 ease-out gap-6 items-center justify-center"
@@ -290,7 +355,9 @@ export const MenuPage: React.FC = () => {
             >
               {categoryItems.map((item: any, idx: number) => {
                 const isCenter = idx === sliderIndex;
-                const displayName = language === 'th' ? (item.nameTh || item.nameEn) : (item.nameEn || item.nameTh);
+                const displayName = language === 'th' 
+                  ? (item.nameTh || item.name || item.title || item.nameEn || item.productName || item.dishName || "เมนูแนะนำ")
+                  : (item.nameEn || item.name || item.title || item.nameTh || item.productName || item.dishName || "Featured Menu");
 
                 return (
                   <div
@@ -303,7 +370,6 @@ export const MenuPage: React.FC = () => {
                       isCenter ? 'scale-105 shadow-2xl border-[#d97706] ring-4 ring-amber-500/20' : 'scale-95 opacity-70 hover:opacity-100 border-[#EAE3DB]'
                     }`}
                   >
-                    {/* Transparent Product Beverage Image with Floating "ดูเพิ่มเติม" Pill Overlay on Active Drink */}
                     <div className="relative w-40 h-48 mx-auto mb-4 flex items-center justify-center">
                       <img
                         src={item.imageUrl}
@@ -322,12 +388,11 @@ export const MenuPage: React.FC = () => {
                       )}
                     </div>
 
-                    {/* Item Title & Price Neatly Below */}
-                    <h3 className="font-black text-[#3e2723] text-base sm:text-lg mb-1 truncate px-2">
-                      {displayName}
+                    <h3 className="text-base font-bold text-[#1E1E1E] mb-1 line-clamp-1">
+                      {item.name || item.title || item.nameTh || item.nameEn || item.productName || item.dishName || "เมนูแนะนำ"}
                     </h3>
-                    <div className="text-[#d97706] font-black text-base">
-                      {item.basePrice} บาท
+                    <div className="text-[#1E3A8A] font-black text-base">
+                      ฿{item.basePrice}
                     </div>
                   </div>
                 );
@@ -335,7 +400,6 @@ export const MenuPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Arrow */}
           <button
             onClick={nextSlider}
             className="absolute right-0 z-20 w-12 h-12 rounded-full bg-white shadow-lg border border-gray-200 flex items-center justify-center text-[#3e2723] hover:bg-[#F4EFEB] transition-all -mr-2 sm:-mr-6"
@@ -359,29 +423,8 @@ export const MenuPage: React.FC = () => {
         />
       )}
 
-      {/* Footer */}
+      {/* Footer / Info Section (Branch References Removed) */}
       <footer className="mt-20">
-        <div className="bg-[#EAE3DB] rounded-3xl p-8 sm:p-12 text-[#3e2723] shadow-lg mb-12 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#dfd6cc]">
-          <div>
-            <h3 className="text-2xl sm:text-3xl font-black tracking-tight">Porto Coffee สาขาแฟลกชิป</h3>
-            <p className="text-[#5c3a31]/80 text-sm mt-1">สัมผัสความหอมกรุ่นของกาแฟพรีเมียมและเบเกอรีอบสดใหม่ใจกลางเมือง</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <button
-              onClick={() => alert('กำลังค้นหาสาขาใกล้คุณ... (สาขาใกล้ที่สุด: สุขุมวิท 24 ห่างออกไป 1.2 กม.)')}
-              className="bg-[#d97706] hover:bg-[#b45309] text-white px-6 py-3.5 rounded-2xl font-bold text-sm shadow-md transition-all"
-            >
-              ร้านใกล้ฉัน
-            </button>
-            <button
-              onClick={() => alert('สาขา Porto Coffee ทั้งหมด:\n- สาขา สุขุมวิท 24 (เปิด 08:00 - 17:00)\n- สาขา อารีย์ (เปิด 07:30 - 18:00)\n- สาขา สีลมคอมเพล็กซ์ (เปิด 08:00 - 20:00)')}
-              className="bg-white hover:bg-gray-50 text-[#3e2723] border border-[#d6c9b8] px-6 py-3.5 rounded-2xl font-bold text-sm shadow-xs transition-all"
-            >
-              สาขา Porto Coffee
-            </button>
-          </div>
-        </div>
-
         <div className="bg-[#5A483E] text-white rounded-t-3xl pt-16 pb-12 px-6 sm:px-12 shadow-2xl">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
             
@@ -409,7 +452,7 @@ export const MenuPage: React.FC = () => {
                 </a>
                 <a href="#line" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="LINE">
                   <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .336-.236.63-.63.63-.33 0-.585-.24-5.85-.63v-4.38c0-.345.27-.63.6-.63.345 0 .63.285.63.63v3.75zM8.52 13.509H7.26V8.108c0-.345.285-.63.63-.63.345 0 .63.285.63.63v4.771c0 .343-.285.63-.63.63zm-4.89-3.646h-1.74c-.345 0-.63-.285-.63-.63 0-.349.285-.63.63-.63h1.74c.345 0 .63.281.63.63 0 .345-.285.63-.63.63zm18.525 2.137C22.195 5.753 17.665 2 12 2S1.805 5.753 1.805 12c0 5.568 4.11 10.198 9.51 10.957.375.054.645.36 0 .735l-.555 2.01c-.105.375.105.765.48.87.12.03.24.045.36.045 2.61 0 4.965-1.02 6.705-2.67 3.96-1.5 6.78-5.385 6.78-9.945z"/>
+                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .336-.236.63-.63.63-.33 0-.585-.24-5.85-.63v-4.38c0-.345.27-.63.6-.63.345 0 .63.285.63.63v3.75zM8.52 13.509H7.26V8.108c0-.345.285-.63.63-.63.345 0 .63.285.63.63v4.771c0 .343-.285.63-.63.63zm-4.89-3.646h-1.74c-.345 0-.63-.285-.63-.63 0 .349.285.63.63.63h1.74c.345 0 .63.281.63.63 0 .345-.285.63-.63.63zm18.525 2.137C22.195 5.753 17.665 2 12 2S1.805 5.753 1.805 12c0 5.568 4.11 10.198 9.51 10.957.375.054.645.36 0 .735l-.555 2.01c-.105.375.105.765.48.87.12.03.24.045.36.045 2.61 0 4.965-1.02 6.705-2.67 3.96-1.5 6.78-5.385 6.78-9.945z"/>
                   </svg>
                 </a>
                 <a href="#tiktok" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="TikTok">
@@ -451,92 +494,73 @@ export const MenuPage: React.FC = () => {
                   onClick={() => {
                     const matched = categories.find((c: any) => c.name?.toLowerCase().includes('coffee') || c.nameTh?.includes('กาแฟ'));
                     if (matched) setSelectedCategory(matched.id);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                    const el = document.getElementById('menu-showcase-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="cursor-pointer hover:underline hover:text-white transition-colors"
                 >
-                  เอสเพรสโซ่ & กาแฟสด
+                  เมนูกาแฟ
                 </li>
                 <li 
                   onClick={() => {
                     const matched = categories.find((c: any) => c.name?.toLowerCase().includes('tea') || c.nameTh?.includes('ชา'));
                     if (matched) setSelectedCategory(matched.id);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                    const el = document.getElementById('menu-showcase-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="cursor-pointer hover:underline hover:text-white transition-colors"
                 >
-                  ชาไทย & มัทฉะลาเต้
+                  เมนูชา
                 </li>
                 <li 
                   onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('smoothie') || c.nameTh?.includes('เบเกอรี'));
+                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('chocolate') || c.nameTh?.includes('ช็อกโกแลต'));
                     if (matched) setSelectedCategory(matched.id);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                    const el = document.getElementById('menu-showcase-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="cursor-pointer hover:underline hover:text-white transition-colors"
                 >
-                  ครัวซองต์เนยสด
+                  เมนูช็อกโกแลต
                 </li>
                 <li 
                   onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('smoothie') || c.nameTh?.includes('เบเกอรี'));
+                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('bakery') || c.nameTh?.includes('เบเกอรี'));
                     if (matched) setSelectedCategory(matched.id);
-                    window.scrollTo({ top: 300, behavior: 'smooth' });
+                    const el = document.getElementById('menu-showcase-section');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className="cursor-pointer hover:underline hover:text-white transition-colors"
                 >
-                  เค้กและเบเกอรี
+                  เบเกอรีอบสด
                 </li>
               </ul>
             </div>
 
             <div>
-              <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-4">เกี่ยวกับเรา</h4>
-              <ul className="space-y-2.5 text-sm text-amber-100/80 mb-6">
-                <li><a href="#about" onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-about-modal')); }} className="hover:text-white transition-colors">เรื่องราวแบรนด์</a></li>
-                <li><a href="#branches" onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-location-modal')); }} className="hover:text-white transition-colors">สาขาแฟลกชิปสุขุมวิท 24</a></li>
-                <li><a href="#membership" onClick={(e) => { e.preventDefault(); window.dispatchEvent(new CustomEvent('open-member-modal')); }} className="hover:text-white transition-colors">Member & สิทธิประโยชน์</a></li>
+              <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-4">ช่วยเหลือ</h4>
+              <ul className="space-y-2.5 text-sm text-amber-100/80">
+                <li onClick={() => window.dispatchEvent(new CustomEvent('open-member-modal'))} className="cursor-pointer hover:underline hover:text-white transition-colors">
+                  ตรวจสอบสิทธิ์สมาชิก
+                </li>
+                <li onClick={() => alert('ติดต่อฝ่ายบริการลูกค้า โทร 02-123-4567 (08:00 - 20:00 น.)')} className="cursor-pointer hover:underline hover:text-white transition-colors">
+                  ติดต่อเรา
+                </li>
+                <li onClick={() => alert('นโยบายความเป็นส่วนตัวของ Porto Coffee มุ่งมั่นปกป้องข้อมูลส่วนบุคคลของคุณตามกฎหมาย PDPA')} className="cursor-pointer hover:underline hover:text-white transition-colors">
+                  นโยบายความเป็นส่วนตัว
+                </li>
               </ul>
             </div>
+
           </div>
 
-          <div className="max-w-7xl mx-auto border-t border-white/10 pt-10 pb-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h4 className="font-bold text-white text-lg mb-1">ไม่พลาดทุกข่าวสารของ Porto Coffee</h4>
-              <p className="text-xs text-amber-100/80">ลงทะเบียนอีเมลเพื่อรับสิทธิพิเศษ โปรโมชัน และข่าวสารใหม่ก่อนใคร</p>
-            </div>
-            <form onSubmit={(e) => { e.preventDefault(); alert('ขอบคุณสำหรับการสมัครรับข่าวสาร'); }} className="space-y-3">
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="กรอกอีเมลของคุณ..."
-                  required
-                  className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/25 text-white placeholder-amber-200/50 text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
-                />
-                <button
-                  type="submit"
-                  className="bg-[#d97706] hover:bg-[#b45309] text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-md whitespace-nowrap"
-                >
-                  ติดตามข่าวสาร
-                </button>
-              </div>
-              <div className="flex items-center space-x-2 text-xs text-amber-100/80">
-                <input type="checkbox" required id="porto_terms" className="rounded border-white/30 text-amber-600 focus:ring-amber-400" />
-                <label htmlFor="porto_terms">ฉันยอมรับและเข้าใจ เงื่อนไขและข้อกำหนด นโยบายความเป็นส่วนตัว</label>
-              </div>
-            </form>
-          </div>
-
-          <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center text-xs text-amber-100/60 gap-4">
+          <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200/60">
             <p>© 2026 Porto Coffee Co., Ltd. All rights reserved.</p>
-            <div className="flex space-x-6">
-              <span onClick={() => window.dispatchEvent(new CustomEvent('open-policy', { detail: 'privacy' }))} className="cursor-pointer hover:underline text-xs text-stone-400 hover:text-stone-200 transition-colors">นโยบายความเป็นส่วนตัว</span>
-              <span onClick={() => window.dispatchEvent(new CustomEvent('open-policy', { detail: 'terms' }))} className="cursor-pointer hover:underline text-xs text-stone-400 hover:text-stone-200 transition-colors">ข้อกำหนดการใช้งาน</span>
-              <span onClick={() => window.dispatchEvent(new CustomEvent('open-policy', { detail: 'cookies' }))} className="cursor-pointer hover:underline text-xs text-stone-400 hover:text-stone-200 transition-colors">นโยบายคุกกี้</span>
-            </div>
+            <p className="mt-2 sm:mt-0">Crafted with ❤️ for Premium Coffee Lovers</p>
           </div>
         </div>
       </footer>
+
     </div>
   );
 };
