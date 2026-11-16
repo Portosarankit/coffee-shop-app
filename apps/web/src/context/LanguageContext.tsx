@@ -1,65 +1,39 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { th, en, zh, TranslationDictionary } from '@coffee-shop/shared';
 
-type Language = 'en' | 'th';
-
-export const th = {
-  common: {
-    back: 'กลับ',
-    confirm: 'ยืนยัน',
-    cancel: 'ยกเลิก',
-    save: 'บันทึก',
-    delete: 'ลบ',
-  },
-  menu: {
-    title: 'เมนู',
-    addToCart: 'เพิ่มลงตะกร้า',
-    outOfStock: 'สินค้าหมด',
-  },
-  order: {
-    status: 'สถานะออเดอร์',
-    received: 'ได้รับออเดอร์แล้ว',
-    preparing: 'กำลังเตรียมอาหาร',
-    served: 'เสิร์ฟแล้ว',
-    canceled: 'ยกเลิกแล้ว',
-  }
-};
-
-export type TranslationDictionary = typeof th;
-
-export const en: TranslationDictionary = {
-  common: {
-    back: 'Back',
-    confirm: 'Confirm',
-    cancel: 'Cancel',
-    save: 'Save',
-    delete: 'Delete',
-  },
-  menu: {
-    title: 'Menu',
-    addToCart: 'Add to Cart',
-    outOfStock: 'Out of Stock',
-  },
-  order: {
-    status: 'Order Status',
-    received: 'Received',
-    preparing: 'Preparing',
-    served: 'Served',
-    canceled: 'Canceled',
-  }
-};
+export type Language = 'th' | 'en' | 'zh';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: typeof en;
+  t: TranslationDictionary;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(() => {
+    try {
+      const saved = localStorage.getItem('porto_coffee_lang') as Language;
+      if (saved && ['th', 'en', 'zh'].includes(saved)) {
+        return saved;
+      }
+    } catch (e) {
+      console.error('Failed to load language from localStorage', e);
+    }
+    return 'th'; // Default to Thai as specified
+  });
 
-  const t = language === 'th' ? th : en;
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    try {
+      localStorage.setItem('porto_coffee_lang', lang);
+    } catch (e) {
+      console.error('Failed to save language to localStorage', e);
+    }
+  };
+
+  const t = language === 'th' ? th : language === 'zh' ? zh : en;
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>

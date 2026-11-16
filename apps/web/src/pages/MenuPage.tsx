@@ -11,7 +11,7 @@ export const MenuPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [sliderIndex, setSliderIndex] = useState(0);
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   useEffect(() => {
     const fallbackMenu = {
@@ -21,17 +21,18 @@ export const MenuPage: React.FC = () => {
           name: 'Popular Signature',
           nameEn: 'Popular Signature',
           nameTh: 'เมนูยอดนิยม',
+          nameZh: '人气招牌',
           items: [
-            { id: 201, nameEn: 'Porto Signature', nameTh: 'พอร์โต ซิกเนเจอร์', descriptionEn: 'Special blended coffee with secret caramel touch', descriptionTh: 'พอร์โต ซิกเนเจอร์ กาแฟสูตรพิเศษหอมกลมกล่อม', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 202, nameEn: 'Young Coconut Coffee', nameTh: 'กาแฟมะพร้าวอ่อน', descriptionEn: 'Fresh coconut water topped with rich espresso shot', descriptionTh: 'กาแฟมะพร้าวอ่อน น้ำมะพร้าวสดหอมหวานราดช็อตกาแฟ', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 203, nameEn: 'Iced Thai Tea', nameTh: 'ชาไทยเย็น', descriptionEn: 'Traditional Thai milk tea with rich aroma', descriptionTh: 'ชาไทยเย็น หอมเข้มข้นสูตรดั้งเดิม', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 204, nameEn: 'Matcha Latte', nameTh: 'มัทฉะลาเต้', descriptionEn: 'Premium Japanese green tea with fresh milk', descriptionTh: 'มัทฉะลาเต้ ชาเขียวญี่ปุ่นแท้พรีเมียม', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 205, nameEn: 'Premium Cocoa', nameTh: 'โกโก้พรีเมียม', descriptionEn: 'Rich and creamy dark cocoa', descriptionTh: 'โกโก้พรีเมียม เข้มข้นละมุนลิ้น', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 206, nameEn: 'Taiwan Milk Tea', nameTh: 'ชานมไต้หวัน', descriptionEn: 'Authentic Taiwan milk tea', descriptionTh: 'ชานมไต้หวัน หอมกลิ่นชาไต้หวันแท้', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 207, nameEn: 'Butter Croissant', nameTh: 'ครัวซองต์เนยสด', descriptionEn: 'Flaky and buttery fresh croissant', descriptionTh: 'ครัวซองต์เนยสด หอมกรุ่น กรอบนอกนุ่มใน', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 208, nameEn: 'Basque Burnt Cheesecake', nameTh: 'ชีสเค้กหน้าไหม้', descriptionEn: 'Rich and creamy burnt Basque cheesecake', descriptionTh: 'ชีสเค้กหน้าไหม้ เนื้อเนียนนุ่มละลายในปาก', basePrice: 110, imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 209, nameEn: 'Traditional Brownie', nameTh: 'บราวนี่ฉ่ำโบราณ', descriptionEn: 'Fudgy and rich traditional chocolate brownie', descriptionTh: 'บราวนี่ฉ่ำโบราณ ช็อกโกแลตเข้มข้นหนึบหนับ', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 210, nameEn: 'Lemon Soda', nameTh: 'มะนาวโซดา', descriptionEn: 'Refreshing sparkling lemon soda', descriptionTh: 'มะนาวโซดา ซ่าสดชื่นคลายร้อน', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true }
+            { id: 201, nameEn: 'Porto Signature', nameTh: 'พอร์โต ซิกเนเจอร์', nameZh: 'Porto招牌咖啡', descriptionEn: 'Special blended coffee with secret caramel touch', descriptionTh: 'พอร์โต ซิกเนเจอร์ กาแฟสูตรพิเศษหอมกลมกล่อม', descriptionZh: '特调招牌咖啡，带有秘密焦糖风味', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 202, nameEn: 'Young Coconut Coffee', nameTh: 'กาแฟมะพร้าวอ่อน', nameZh: '鲜椰子咖啡', descriptionEn: 'Fresh coconut water topped with rich espresso shot', descriptionTh: 'กาแฟมะพร้าวอ่อน น้ำมะพร้าวสดหอมหวานราดช็อตกาแฟ', descriptionZh: '新鲜椰子水搭配香浓浓缩咖啡', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 203, nameEn: 'Iced Thai Tea', nameTh: 'ชาไทยเย็น', nameZh: '泰式冰奶茶', descriptionEn: 'Traditional Thai milk tea with rich aroma', descriptionTh: 'ชาไทยเย็น หอมเข้มข้นสูตรดั้งเดิม', descriptionZh: '传统泰式奶茶，香浓醇厚', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 204, nameEn: 'Matcha Latte', nameTh: 'มัทฉะลาเต้', nameZh: '抹茶拿铁', descriptionEn: 'Premium Japanese green tea with fresh milk', descriptionTh: 'มัทฉะลาเต้ ชาเขียวญี่ปุ่นแท้พรีเมียม', descriptionZh: '优质日本绿茶搭配鲜奶', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 205, nameEn: 'Premium Cocoa', nameTh: 'โกโก้พรีเมียม', nameZh: '高级可可', descriptionEn: 'Rich and creamy dark cocoa', descriptionTh: 'โกโก้พรีเมียม เข้มข้นละมุนลิ้น', descriptionZh: '浓郁丝滑黑可可', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 206, nameEn: 'Taiwan Milk Tea', nameTh: 'ชานมไต้หวัน', nameZh: '台湾奶茶', descriptionEn: 'Authentic Taiwan milk tea', descriptionTh: 'ชานมไต้หวัน หอมกลิ่นชาไต้หวันแท้', descriptionZh: '地道台湾风味奶茶', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 207, nameEn: 'Butter Croissant', nameTh: 'ครัวซองต์เนยสด', nameZh: '牛角面包', descriptionEn: 'Flaky and buttery fresh croissant', descriptionTh: 'ครัวซองต์เนยสด หอมกรุ่น กรอบนอกนุ่มใน', descriptionZh: '酥脆香浓黄油牛角包', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 208, nameEn: 'Basque Burnt Cheesecake', nameTh: 'ชีสเค้กหน้าไหม้', nameZh: '巴斯克烧焦芝士蛋糕', descriptionEn: 'Rich and creamy burnt Basque cheesecake', descriptionTh: 'ชีสเค้กหน้าไหม้ เนื้อเนียนนุ่มละลายในปาก', descriptionZh: '香浓绵密巴斯克芝士蛋糕', basePrice: 110, imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 209, nameEn: 'Traditional Brownie', nameTh: 'บราวนี่ฉ่ำโบราณ', nameZh: '传统布朗尼', descriptionEn: 'Fudgy and rich traditional chocolate brownie', descriptionTh: 'บราวนี่ฉ่ำโบราณ ช็อกโกแลตเข้มข้นหนึบหนับ', descriptionZh: '浓郁经典巧克力布朗尼', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 210, nameEn: 'Lemon Soda', nameTh: 'มะนาวโซดา', nameZh: '柠檬苏打', descriptionEn: 'Refreshing sparkling lemon soda', descriptionTh: 'มะนาวโซดา ซ่าสดชื่นคลายร้อน', descriptionZh: '清爽解渴柠檬气泡水', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true }
           ]
         },
         {
@@ -39,17 +40,18 @@ export const MenuPage: React.FC = () => {
           name: 'Coffee',
           nameEn: 'Coffee',
           nameTh: 'เมนูกาแฟ',
+          nameZh: '咖啡系列',
           items: [
-            { id: 101, nameEn: 'Espresso', nameTh: 'เอสเพรสโซ่', descriptionEn: 'Rich and bold single shot of espresso', descriptionTh: 'เอสเพรสโซ่เข้มข้น หอมกรุ่นกลิ่นกาแฟคั่วบด', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 102, nameEn: 'Americano', nameTh: 'อเมริกาโน่', descriptionEn: 'Smooth espresso with hot or iced water', descriptionTh: 'กาแฟดำอเมริกาโน่ หอมกลิ่นเมล็ดกาแฟแท้', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 103, nameEn: 'Latte', nameTh: 'ลาเต้', descriptionEn: 'Espresso with steamed milk and a light layer of foam', descriptionTh: 'ลาเต้นุ่มละมุน ผสมนมสดแท้กลมกล่อม', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 104, nameEn: 'Cappuccino', nameTh: 'คาปูชิโน่', descriptionEn: 'Espresso with equal parts steamed milk and milk foam', descriptionTh: 'คาปูชิโน่ฟองนมนุ่ม โรยผงโกโก้บางๆ', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=800&auto=format&fit=crop&q=80', isAvailable: true },
-            { id: 105, nameEn: 'Mocha', nameTh: 'มอคค่า', descriptionEn: 'Espresso with chocolate and steamed milk', descriptionTh: 'มอคค่าเข้มข้นผสมช็อกโกแลตแท้พรีเมียม', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 106, nameEn: 'Caramel Macchiato', nameTh: 'คาราเมล มักคิอาโต้', descriptionEn: 'Espresso with vanilla and caramel drizzle', descriptionTh: 'คาราเมล มักคิอาโต้ หอมหวานคาราเมล', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 107, nameEn: 'Dirty Coffee', nameTh: 'เดอร์ตี้ คอฟฟี่', descriptionEn: 'Chilled rich milk layered with hot espresso shot', descriptionTh: 'เดอร์ตี้ คอฟฟี่ นมเย็นจัดราดด้วยช็อตเอสเพรสโซ่ร้อน', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 108, nameEn: 'Cold Brew', nameTh: 'โคลด์บรูว์', descriptionEn: 'Slow steeped smooth cold brew coffee', descriptionTh: 'โคลด์บรูว์ กาแฟสกัดเย็นนุ่มละมุน', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 109, nameEn: 'Orange Espresso', nameTh: 'เอสเพรสโซ่ส้ม', descriptionEn: 'Espresso shot over refreshing sweet orange juice', descriptionTh: 'เอสเพรสโซ่ส้ม ผสานน้ำส้มคั้นสดชื่น', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 110, nameEn: 'Affogato', nameTh: 'อัฟโฟกาโต', descriptionEn: 'Vanilla ice cream topped with a hot espresso shot', descriptionTh: 'อัฟโฟกาโต ไอศกรีมวนิลาลาดด้วยเอสเพรสโซ่ร้อน', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop', isAvailable: true }
+            { id: 101, nameEn: 'Espresso', nameTh: 'เอสเพรสโซ่', nameZh: '意式浓缩', descriptionEn: 'Rich and bold single shot of espresso', descriptionTh: 'เอสเพรสโซ่เข้มข้น หอมกรุ่นกลิ่นกาแฟคั่วบด', descriptionZh: '浓郁纯正意式浓缩咖啡', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 102, nameEn: 'Americano', nameTh: 'อเมริกาโน่', nameZh: '美式咖啡', descriptionEn: 'Smooth espresso with hot or iced water', descriptionTh: 'กาแฟดำอเมริกาโน่ หอมกลิ่นเมล็ดกาแฟแท้', descriptionZh: '经典顺滑美式咖啡', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 103, nameEn: 'Latte', nameTh: 'ลาเต้', nameZh: '拿铁咖啡', descriptionEn: 'Espresso with steamed milk and a light layer of foam', descriptionTh: 'ลาเต้นุ่มละมุน ผสมนมสดแท้กลมกล่อม', descriptionZh: '香浓拿铁咖啡伴顺滑奶泡', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 104, nameEn: 'Cappuccino', nameTh: 'คาปูชิโน่', nameZh: '卡布奇诺', descriptionEn: 'Espresso with equal parts steamed milk and milk foam', descriptionTh: 'คาปูชิโน่ฟองนมนุ่ม โรยผงโกโก้บางๆ', descriptionZh: '经典卡布奇诺伴丰富奶泡', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=800&auto=format&fit=crop&q=80', isAvailable: true },
+            { id: 105, nameEn: 'Mocha', nameTh: 'มอคค่า', nameZh: '摩卡咖啡', descriptionEn: 'Espresso with chocolate and steamed milk', descriptionTh: 'มอคค่าเข้มข้นผสมช็อกโกแลตแท้พรีเมียม', descriptionZh: '浓缩咖啡融合香甜巧克力与鲜奶', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 106, nameEn: 'Caramel Macchiato', nameTh: 'คาราเมล มักคิอาโต้', nameZh: '焦糖玛奇朵', descriptionEn: 'Espresso with vanilla and caramel drizzle', descriptionTh: 'คาราเมล มักคิอาโต้ หอมหวานคาราเมล', descriptionZh: '香草与焦糖风味玛奇朵', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 107, nameEn: 'Dirty Coffee', nameTh: 'เดอร์ตี้ คอฟฟี่', nameZh: '脏咖啡', descriptionEn: 'Chilled rich milk layered with hot espresso shot', descriptionTh: 'เดอร์ตี้ คอฟฟี่ นมเย็นจัดราดด้วยช็อตเอสเพรสโซ่ร้อน', descriptionZh: '冰镇冰乳层叠热意式浓缩', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 108, nameEn: 'Cold Brew', nameTh: 'โคลด์บรูว์', nameZh: '冷萃咖啡', descriptionEn: 'Slow steeped smooth cold brew coffee', descriptionTh: 'โคลด์บรูว์ กาแฟสกัดเย็นนุ่มละมุน', descriptionZh: '慢速冷萃顺滑咖啡', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 109, nameEn: 'Orange Espresso', nameTh: 'เอสเพรสโซ่ส้ม', nameZh: '橙香意式浓缩', descriptionEn: 'Espresso shot over refreshing sweet orange juice', descriptionTh: 'เอสเพรสโซ่ส้ม ผสานน้ำส้มคั้นสดชื่น', descriptionZh: '香浓意式浓缩搭配新鲜橙汁', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 110, nameEn: 'Affogato', nameTh: 'อัฟโฟกาโต', nameZh: '阿芙佳朵', descriptionEn: 'Vanilla ice cream topped with a hot espresso shot', descriptionTh: 'อัฟโฟกาโต ไอศกรีมวนิลาลาดด้วยเอสเพรสโซ่ร้อน', descriptionZh: '香草冰淇淋浇筑热浓缩咖啡', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop', isAvailable: true }
           ]
         },
         {
@@ -57,17 +59,18 @@ export const MenuPage: React.FC = () => {
           name: 'Tea',
           nameEn: 'Tea',
           nameTh: 'เมนูชา',
+          nameZh: '茶饮系列',
           items: [
-            { id: 301, nameEn: 'Thai Tea', nameTh: 'ชาไทย', descriptionEn: 'Traditional Thai milk tea with rich aroma', descriptionTh: 'ชาไทยสูตรดั้งเดิม หอมหวานมันกลมกล่อม', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 302, nameEn: 'Matcha Latte', nameTh: 'มัทฉะลาเต้', descriptionEn: 'Premium Japanese green tea with fresh milk', descriptionTh: 'ชาเขียวมัทฉะพรีเมียมนำเข้าจากญี่ปุ่น หอมเข้มข้น', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 303, nameEn: 'Lemon Tea', nameTh: 'ชามะนาว', descriptionEn: 'Refreshing black tea infused with fresh lemon juice', descriptionTh: 'ชามะนาวรสเปรี้ยวหวานสดชื่น ดับกระหาย', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 304, nameEn: 'Iced Black Tea', nameTh: 'ชาดำเย็น', descriptionEn: 'Refreshing chilled black tea', descriptionTh: 'ชาดำเย็น หอมหวานชื่นใจ', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 305, nameEn: 'Peach Jasmine Tea', nameTh: 'ชามะลิพีช', descriptionEn: 'Fragrant jasmine tea infused with sweet peach', descriptionTh: 'ชามะลิพีช หอมกลิ่นมะลิและพีชหวานฉ่ำ', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 306, nameEn: 'Earl Grey Latte', nameTh: 'ชาเอิร์ลเกรย์ลาเต้', descriptionEn: 'Earl Grey tea with steamed milk', descriptionTh: 'ชาเอิร์ลเกรย์ลาเต้ หอมกลิ่นเบอร์กามอตละมุน', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 307, nameEn: 'Hojicha Tea', nameTh: 'ชาโฮจิฉะ', descriptionEn: 'Roasted Japanese green tea', descriptionTh: 'ชาโฮจิฉะ ชาเขียวคั่วหอมกลิ่นคั่วเอกลักษณ์', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 308, nameEn: 'Jasmine Green Tea', nameTh: 'ชาเขียวมะลิ', descriptionEn: 'Light and fragrant jasmine green tea', descriptionTh: 'ชาเขียวมะลิ หอมสดชื่นเบาสบาย', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 309, nameEn: 'Yuzu Orange Tea', nameTh: 'ชาส้มยูสุ', descriptionEn: 'Refreshing tea with Japanese yuzu orange', descriptionTh: 'ชาส้มยูสุ หอมกลิ่นยูสุเปรี้ยวหวานสดชื่น', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 310, nameEn: 'Apple Tea', nameTh: 'ชาแอปเปิ้ล', descriptionEn: 'Refreshing apple flavored tea', descriptionTh: 'ชาแอปเปิ้ล หอมกลิ่นแอปเปิ้ลหวานละมุน', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true }
+            { id: 301, nameEn: 'Thai Tea', nameTh: 'ชาไทย', nameZh: '泰式奶茶', descriptionEn: 'Traditional Thai milk tea with rich aroma', descriptionTh: 'ชาไทยสูตรดั้งเดิม หอมหวานมันกลมกล่อม', descriptionZh: '传统浓香泰式奶茶', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 302, nameEn: 'Matcha Latte', nameTh: 'มัทฉะลาเต้', nameZh: '抹茶拿铁', descriptionEn: 'Premium Japanese green tea with fresh milk', descriptionTh: 'ชาเขียวมัทฉะพรีเมียมนำเข้าจากญี่ปุ่น หอมเข้มข้น', descriptionZh: '优质日本进口抹茶拿铁', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 303, nameEn: 'Lemon Tea', nameTh: 'ชามะนาว', nameZh: '柠檬茶', descriptionEn: 'Refreshing black tea infused with fresh lemon juice', descriptionTh: 'ชามะนาวรสเปรี้ยวหวานสดชื่น ดับกระหาย', descriptionZh: '清爽解腻柠檬红茶', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 304, nameEn: 'Iced Black Tea', nameTh: 'ชาดำเย็น', nameZh: '冰红茶', descriptionEn: 'Refreshing chilled black tea', descriptionTh: 'ชาดำเย็น หอมหวานชื่นใจ', descriptionZh: '清凉冰红茶', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 305, nameEn: 'Peach Jasmine Tea', nameTh: 'ชามะลิพีช', nameZh: '白桃茉莉花茶', descriptionEn: 'Fragrant jasmine tea infused with sweet peach', descriptionTh: 'ชามะลิพีช หอมกลิ่นมะลิและพีชหวานฉ่ำ', descriptionZh: '香甜白桃搭配清香茉莉绿茶', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 306, nameEn: 'Earl Grey Latte', nameTh: 'ชาเอิร์ลเกรย์ลาเต้', nameZh: '伯爵拿铁', descriptionEn: 'Earl Grey tea with steamed milk', descriptionTh: 'ชาเอิร์ลเกรย์ลาเต้ หอมกลิ่นเบอร์กามอตละมุน', descriptionZh: '香气怡人伯爵茶拿铁', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 307, nameEn: 'Hojicha Tea', nameTh: 'ชาโฮจิฉะ', nameZh: '焙茶', descriptionEn: 'Roasted Japanese green tea', descriptionTh: 'ชาโฮจิฉะ ชาเขียวคั่วหอมกลิ่นคั่วเอกลักษณ์', descriptionZh: '香浓日式烘焙绿茶', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 308, nameEn: 'Jasmine Green Tea', nameTh: 'ชาเขียวมะลิ', nameZh: '茉莉绿茶', descriptionEn: 'Light and fragrant jasmine green tea', descriptionTh: 'ชาเขียวมะลิ หอมสดชื่นเบาสบาย', descriptionZh: '清新淡雅茉莉绿茶', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 309, nameEn: 'Yuzu Orange Tea', nameTh: 'ชาส้มยูสุ', nameZh: '柚子茶', descriptionEn: 'Refreshing tea with Japanese yuzu orange', descriptionTh: 'ชาส้มยูสุ หอมกลิ่นยูสุเปรี้ยวหวานสดชื่น', descriptionZh: '日式柚子风味清爽茶饮', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 310, nameEn: 'Apple Tea', nameTh: 'ชาแอปเปิ้ล', nameZh: '苹果茶', descriptionEn: 'Refreshing apple flavored tea', descriptionTh: 'ชาแอปเปิ้ล หอมกลิ่นแอปเปิ้ลหวานละมุน', descriptionZh: '果香浓郁苹果茶', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop', isAvailable: true }
           ]
         },
         {
@@ -75,17 +78,18 @@ export const MenuPage: React.FC = () => {
           name: 'Chocolate & Milk',
           nameEn: 'Chocolate & Milk',
           nameTh: 'เมนูช็อกโกแลตและนม',
+          nameZh: '巧克力与牛奶系列',
           items: [
-            { id: 401, nameEn: 'Rich Cocoa', nameTh: 'โกโก้เข้มข้น', descriptionEn: 'Rich and creamy dark cocoa with fresh milk', descriptionTh: 'โกโก้เข้มข้น หวานน้อย ละมุนลิ้น', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 402, nameEn: 'Hokkaido Fresh Milk', nameTh: 'นมสดฮอกไกโด', descriptionEn: 'Pure Hokkaido fresh milk', descriptionTh: 'นมสดฮอกไกโด หอมมันเข้มข้นพิเศษ', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 403, nameEn: 'Pink Milk', nameTh: 'นมชมพู', descriptionEn: 'Sweet Salas syrup with fresh milk', descriptionTh: 'นมชมพู หอมหวานกลมกล่อมชื่นใจ', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1579888944782-cb5f1db26005?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 404, nameEn: 'Caramel Fresh Milk', nameTh: 'นมสดคาราเมล', descriptionEn: 'Fresh milk with sweet caramel drizzle', descriptionTh: 'นมสดคาราเมล หอมหวานคาราเมลละมุน', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 405, nameEn: 'White Chocolate Milk', nameTh: 'นมสดไวท์ช็อกโกแลต', descriptionEn: 'Fresh milk with rich white chocolate', descriptionTh: 'นมสดไวท์ช็อกโกแลต หอมหวานนุ่มนวล', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 406, nameEn: 'Mint Chocolate', nameTh: 'ช็อกโกแลตมิ้นท์', descriptionEn: 'Rich chocolate with refreshing mint', descriptionTh: 'ช็อกโกแลตมิ้นท์ หอมช็อกโกแลตและมิ้นท์เย็นสดชื่น', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 407, nameEn: 'Vanilla Fresh Milk', nameTh: 'นมสดวนิลา', descriptionEn: 'Fresh milk with sweet vanilla aroma', descriptionTh: 'นมสดวนิลา หอมหวานวนิลาละมุนลิ้น', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 408, nameEn: 'Chestnut Fresh Milk', nameTh: 'นมสดเกาลัด', descriptionEn: 'Fresh milk with roasted chestnut flavor', descriptionTh: 'นมสดเกาลัด หอมกลิ่นเกาลัดคั่วพรีเมียม', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 409, nameEn: 'Hazelnut Chocolate', nameTh: 'ช็อกโกแลตเฮเซลนัท', descriptionEn: 'Rich chocolate with roasted hazelnut syrup', descriptionTh: 'ช็อกโกแลตเฮเซลนัท หอมถั่วเฮเซลนัทเข้มข้น', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 410, nameEn: 'Purple Sweet Potato Milk', nameTh: 'นมสดมันม่วง', descriptionEn: 'Fresh milk with smooth purple sweet potato', descriptionTh: 'นมสดมันม่วง หอมหวานมันม่วงแท้จากญี่ปุ่น', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true }
+            { id: 401, nameEn: 'Rich Cocoa', nameTh: 'โกโก้เข้มข้น', nameZh: '浓郁可可', descriptionEn: 'Rich and creamy dark cocoa with fresh milk', descriptionTh: 'โกโก้เข้มข้น หวานน้อย ละมุนลิ้น', descriptionZh: '浓郁香滑经典可可', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 402, nameEn: 'Hokkaido Fresh Milk', nameTh: 'นมสดฮอกไกโด', nameZh: '北海道鲜奶', descriptionEn: 'Pure Hokkaido fresh milk', descriptionTh: 'นมสดฮอกไกโด หอมมันเข้มข้นพิเศษ', descriptionZh: '香浓纯正北海道鲜奶', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 403, nameEn: 'Pink Milk', nameTh: 'นมชมพู', nameZh: '粉红牛奶', descriptionEn: 'Sweet Salas syrup with fresh milk', descriptionTh: 'นมชมพู หอมหวานกลมกล่อมชื่นใจ', descriptionZh: '香甜爽口红糖浆鲜奶', basePrice: 60, imageUrl: 'https://images.unsplash.com/photo-1579888944782-cb5f1db26005?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 404, nameEn: 'Caramel Fresh Milk', nameTh: 'นมสดคาราเมล', nameZh: '焦糖鲜奶', descriptionEn: 'Fresh milk with sweet caramel drizzle', descriptionTh: 'นมสดคาราเมล หอมหวานคาราเมลละมุน', descriptionZh: '香滑鲜奶淋上焦糖酱', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 405, nameEn: 'White Chocolate Milk', nameTh: 'นมสดไวท์ช็อกโกแลต', nameZh: '白巧克力牛奶', descriptionEn: 'Fresh milk with rich white chocolate', descriptionTh: 'นมสดไวท์ช็อกโกแลต หอมหวานนุ่มนวล', descriptionZh: '香浓白巧克力鲜奶', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 406, nameEn: 'Mint Chocolate', nameTh: 'ช็อกโกแลตมิ้นท์', nameZh: '薄荷巧克力', descriptionEn: 'Rich chocolate with refreshing mint', descriptionTh: 'ช็อกโกแลตมิ้นท์ หอมช็อกโกแลตและมิ้นท์เย็นสดชื่น', descriptionZh: '浓郁巧克力搭配清新薄荷', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 407, nameEn: 'Vanilla Fresh Milk', nameTh: 'นมสดวนิลา', nameZh: '香草鲜奶', descriptionEn: 'Fresh milk with sweet vanilla aroma', descriptionTh: 'นมสดวนิลา หอมหวานวนิลาละมุนลิ้น', descriptionZh: '香草风味鲜奶', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 408, nameEn: 'Chestnut Fresh Milk', nameTh: 'นมสดเกาลัด', nameZh: '栗子鲜奶', descriptionEn: 'Fresh milk with roasted chestnut flavor', descriptionTh: 'นมสดเกาลัด หอมกลิ่นเกาลัดคั่วพรีเมียม', descriptionZh: '香浓烤栗子风味鲜奶', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 409, nameEn: 'Hazelnut Chocolate', nameTh: 'ช็อกโกแลตเฮเซลนัท', nameZh: '榛果巧克力', descriptionEn: 'Rich chocolate with roasted hazelnut syrup', descriptionTh: 'ช็อกโกแลตเฮเซลนัท หอมถั่วเฮเซลนัทเข้มข้น', descriptionZh: '浓郁巧克力搭配榛果糖浆', basePrice: 80, imageUrl: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 410, nameEn: 'Purple Sweet Potato Milk', nameTh: 'นมสดมันม่วง', nameZh: '紫薯牛奶', descriptionEn: 'Fresh milk with smooth purple sweet potato', descriptionTh: 'นมสดมันม่วง หอมหวานมันม่วงแท้จากญี่ปุ่น', descriptionZh: '香甜紫薯搭配醇厚鲜奶', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=600&auto=format&fit=crop', isAvailable: true }
           ]
         },
         {
@@ -93,17 +97,18 @@ export const MenuPage: React.FC = () => {
           name: 'Smoothie & Bakery',
           nameEn: 'Smoothie & Bakery',
           nameTh: 'เมนูปั่นและเบเกอรี',
+          nameZh: '冰沙与烘焙系列',
           items: [
-            { id: 501, nameEn: 'Butter Croissant', nameTh: 'ครัวซองต์เนยสด', descriptionEn: 'Flaky and buttery fresh croissant', descriptionTh: 'ครัวซองต์เนยสด หอมกรุ่น กรอบนอกนุ่มใน', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 502, nameEn: 'Blueberry Cheesecake', nameTh: 'ชีสเค้กบลูเบอร์รี', descriptionEn: 'Creamy cheesecake topped with sweet blueberry compote', descriptionTh: 'ชีสเค้กบลูเบอร์รี เนื้อเนียนนุ่มราดซอสบลูเบอร์รีฉ่ำๆ', basePrice: 110, imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 503, nameEn: 'Chocolate Brownie', nameTh: 'บราวนี่ช็อกโกแลต', descriptionEn: 'Fudgy and rich chocolate brownie', descriptionTh: 'บราวนี่ช็อกโกแลต เข้มข้นหนึบหนับ', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 504, nameEn: 'Matcha Frappe', nameTh: 'มัทฉะปั่น', descriptionEn: 'Blended premium Japanese green tea', descriptionTh: 'มัทฉะปั่น หอมเข้มข้นหวานมันเย็นชื่นใจ', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 505, nameEn: 'Cocoa Frappe', nameTh: 'โกโก้ปั่น', descriptionEn: 'Rich blended chocolate frappe', descriptionTh: 'โกโก้ปั่น เข้มข้นท็อปวิปครีมล้นๆ', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 506, nameEn: 'Strawberry Special Smoothie', nameTh: 'สตรอว์เบอร์รีสเปเชียลปั่น', descriptionEn: 'Sweet and tangy strawberry special smoothie', descriptionTh: 'สตรอว์เบอร์รีสเปเชียลปั่น เย็นฉ่ำชื่นใจ', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 507, nameEn: 'Almond Croissant', nameTh: 'ครัวซองต์อัลมอนด์', descriptionEn: 'Croissant filled and topped with sweet almond cream', descriptionTh: 'ครัวซองต์อัลมอนด์ หอมมันอัลมอนด์กรุบกรอบ', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 508, nameEn: 'Orange Cake', nameTh: 'เค้กส้ม', descriptionEn: 'Soft sponge cake with fresh orange glaze', descriptionTh: 'เค้กส้ม เนื้อนุ่มราดซอสส้มเปรี้ยวหวานสดชื่น', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 509, nameEn: 'Soft Chocolate Cake', nameTh: 'เค้กช็อกโกแลตหน้านุ่ม', descriptionEn: 'Soft chocolate cake with thick chocolate ganache', descriptionTh: 'เค้กช็อกโกแลตหน้านุ่ม ช็อกโกแลตเยิ้มๆ ละมุน', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
-            { id: 510, nameEn: 'Espresso Frappe', nameTh: 'เอสเพรสโซ่ปั่น', descriptionEn: 'Blended espresso coffee', descriptionTh: 'เอสเพรสโซ่ปั่น เข้มข้นตื่นเต็มตา', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&auto=format&fit=crop', isAvailable: true }
+            { id: 501, nameEn: 'Butter Croissant', nameTh: 'ครัวซองต์เนยสด', nameZh: '牛角面包', descriptionEn: 'Flaky and buttery fresh croissant', descriptionTh: 'ครัวซองต์เนยสด หอมกรุ่น กรอบนอกนุ่มใน', descriptionZh: '酥脆香浓黄油牛角包', basePrice: 65, imageUrl: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 502, nameEn: 'Blueberry Cheesecake', nameTh: 'ชีสเค้กบลูเบอร์รี', nameZh: '蓝莓芝士蛋糕', descriptionEn: 'Creamy cheesecake topped with sweet blueberry compote', descriptionTh: 'ชีสเค้กบลูเบอร์รี เนื้อเนียนนุ่มราดซอสบลูเบอร์รีฉ่ำๆ', descriptionZh: '香浓芝士蛋糕淋上蓝莓果酱', basePrice: 110, imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 503, nameEn: 'Chocolate Brownie', nameTh: 'บราวนี่ช็อกโกแลต', nameZh: '巧克力布朗尼', descriptionEn: 'Fudgy and rich chocolate brownie', descriptionTh: 'บราวนี่ช็อกโกแลต เข้มข้นหนึบหนับ', descriptionZh: '浓郁扎实巧克力布朗尼', basePrice: 70, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 504, nameEn: 'Matcha Frappe', nameTh: 'มัทฉะปั่น', nameZh: '抹茶冰沙', descriptionEn: 'Blended premium Japanese green tea', descriptionTh: 'มัทฉะปั่น หอมเข้มข้นหวานมันเย็นชื่นใจ', descriptionZh: '香浓顺滑抹茶冰沙', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 505, nameEn: 'Cocoa Frappe', nameTh: 'โกโก้ปั่น', nameZh: '可可冰沙', descriptionEn: 'Rich blended chocolate frappe', descriptionTh: 'โกโก้ปั่น เข้มข้นท็อปวิปครีมล้นๆ', descriptionZh: '浓郁可可冰沙顶部配奶油', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 506, nameEn: 'Strawberry Special Smoothie', nameTh: 'สตรอว์เบอร์รีสเปเชียลปั่น', nameZh: '草莓特调冰沙', descriptionEn: 'Sweet and tangy strawberry special smoothie', descriptionTh: 'สตรอว์เบอร์รีสเปเชียลปั่น เย็นฉ่ำชื่นใจ', descriptionZh: '酸甜清爽草莓特调冰沙', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 507, nameEn: 'Almond Croissant', nameTh: 'ครัวซองต์อัลมอนด์', nameZh: '杏仁牛角包', descriptionEn: 'Croissant filled and topped with sweet almond cream', descriptionTh: 'ครัวซองต์อัลมอนด์ หอมมันอัลมอนด์กรุบกรอบ', descriptionZh: '香脆杏仁酱牛角包', basePrice: 75, imageUrl: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 508, nameEn: 'Orange Cake', nameTh: 'เค้กส้ม', nameZh: '香橙蛋糕', descriptionEn: 'Soft sponge cake with fresh orange glaze', descriptionTh: 'เค้กส้ม เนื้อนุ่มราดซอสส้มเปรี้ยวหวานสดชื่น', descriptionZh: '清新香橙淋面松软蛋糕', basePrice: 85, imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 509, nameEn: 'Soft Chocolate Cake', nameTh: 'เค้กช็อกโกแลตหน้านุ่ม', nameZh: '流心巧克力蛋糕', descriptionEn: 'Soft chocolate cake with thick chocolate ganache', descriptionTh: 'เค้กช็อกโกแลตหน้านุ่ม ช็อกโกแลตเยิ้มๆ ละมุน', descriptionZh: '浓郁流心巧克力蛋糕', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', isAvailable: true },
+            { id: 510, nameEn: 'Espresso Frappe', nameTh: 'เอสเพรสโซ่ปั่น', nameZh: '意式浓缩冰沙', descriptionEn: 'Blended espresso coffee', descriptionTh: 'เอสเพรสโซ่ปั่น เข้มข้นตื่นเต็มตา', descriptionZh: '提神醒脑意式浓缩冰沙', basePrice: 90, imageUrl: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=600&auto=format&fit=crop', isAvailable: true }
           ]
         }
       ]
@@ -182,15 +187,15 @@ export const MenuPage: React.FC = () => {
   if (!menuData) return null;
 
   const tabs = [
-    { id: 1, label: 'เมนูยอดนิยม', index: 0 },
-    { id: 2, label: 'เมนูกาแฟ', index: 1 },
-    { id: 3, label: 'เมนูชา', index: 2 },
-    { id: 4, label: 'เมนูช็อกโกแลตและนม', index: 3 },
-    { id: 5, label: 'เมนูปั่นและเบเกอรี', index: 4 }
+    { id: 1, label: t.menu.categories.all, index: 0 },
+    { id: 2, label: t.menu.categories.coffee, index: 1 },
+    { id: 3, label: t.menu.categories.tea, index: 2 },
+    { id: 4, label: t.menu.categories.nonCoffee, index: 3 },
+    { id: 5, label: t.menu.categories.bakery, index: 4 }
   ];
 
   const categories = menuData.categories || [];
-  const activeTabObj = tabs.find(t => t.id === selectedCategory) || tabs[0];
+  const activeTabObj = tabs.find(tObj => tObj.id === selectedCategory) || tabs[0];
   let currentCategory = categories[activeTabObj.index] || categories.find((cat: any) => 
     cat.id === selectedCategory || 
     cat.category === selectedCategory ||
@@ -228,20 +233,19 @@ export const MenuPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 1. "Love at First Sight" Asymmetric 2-Column Hero Section */}
+      {/* 1. Hero Section */}
       <section className="relative rounded-3xl p-6 sm:p-12 overflow-hidden shadow-2xl border border-white/60 bg-gradient-to-tr from-[#D4A373]/30 via-[#F7F3EE] to-[#1E3A8A]/15 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
         
-        {/* Left Column: Warm Typography & Deep Navy Blue CTA */}
         <div className="space-y-6 z-10">
           <div className="inline-flex items-center gap-2 bg-[#1E3A8A]/10 text-[#1E3A8A] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider shadow-xs">
-            <span>⭐ คาเฟ่พรีเมียมอันดับ 1</span>
+            <span>⭐ {t.hero.title}</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-black text-[#1E1E1E] tracking-tight leading-tight">
-            กาแฟพรีเมียม สั่งง่าย ส่งไว <br />
-            <span className="text-[#C68B59]">ปรับแต่งความหวานได้ตามใจคุณ</span>
+            {t.hero.title} <br />
+            <span className="text-[#C68B59]">{t.hero.subtitle}</span>
           </h1>
           <p className="text-[#1E1E1E]/80 text-sm sm:text-base leading-relaxed font-medium">
-            สัมผัสรสชาติความหอมกลมกล่อมของเมล็ดกาแฟคั่วคัดพิเศษ ชาไทยแท้ และเบเกอรีอบสดใหม่ทุกวัน ส่งตรงถึงมือคุณอย่างรวดเร็ว
+            {t.hero.openHours}
           </p>
           <div className="pt-2 flex flex-wrap gap-4">
             <button
@@ -251,51 +255,26 @@ export const MenuPage: React.FC = () => {
               }}
               className="bg-[#1E3A8A] hover:bg-[#152e6d] text-white px-8 py-4 rounded-2xl font-black text-sm shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
             >
-              <span>เริ่มสั่งซื้อ (Explore Menu)</span>
+              <span>{t.hero.orderNow}</span>
               <span>→</span>
-            </button>
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent('open-member-modal'))}
-              className="bg-white/80 hover:bg-white text-[#1E1E1E] px-6 py-4 rounded-2xl font-bold text-sm shadow-sm transition-all border border-black/10"
-            >
-              สิทธิพิเศษสมาชิก
             </button>
           </div>
         </div>
 
-        {/* Right Column: The "Wow" Visual Showcase with Liquid Glass Frame & Floating Badges */}
         <div className="relative flex items-center justify-center p-6">
-          {/* Ambient Radial Glow Background */}
           <div className="absolute inset-0 bg-gradient-to-tr from-[#D4A373]/40 via-[#F7F3EE] to-[#1E3A8A]/20 rounded-3xl blur-2xl"></div>
-
-          {/* Liquid Glass Frame Container */}
           <div className="relative w-72 h-80 sm:w-80 sm:h-96 rounded-3xl liquid-glass border border-white/80 shadow-2xl flex items-center justify-center p-6 transform hover:rotate-1 transition-transform duration-500">
-            
-            {/* Featured Iced Latte Photo */}
             <img
               src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=800&auto=format&fit=crop"
               alt="Featured Iced Latte"
               className="max-h-full max-w-full object-contain drop-shadow-2xl transform hover:scale-105 transition-transform duration-500"
             />
-
-            {/* Interactive Floating Glass Badges */}
-            <div className="absolute -top-4 -left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#1E3A8A] animate-float-slow hover:scale-105 transition-transform">
-              ⭐ เมนูแนะนำวันนี้
-            </div>
-
-            <div className="absolute -bottom-4 -right-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#C68B59] animate-float-fast hover:scale-105 transition-transform">
-              🧊 เย็นชื่นใจ
-            </div>
-
-            <div className="absolute top-1/2 -right-6 transform -translate-y-1/2 bg-white/90 backdrop-blur-md px-3 py-2 rounded-2xl shadow-lg border border-white/60 text-xs font-black text-[#1E1E1E] animate-float-pulse hover:scale-105 transition-transform">
-              🍯 ปรับหวาน 0-100%
-            </div>
           </div>
         </div>
 
       </section>
 
-      {/* 2. Liquid Glass Category Pill Tabs */}
+      {/* 2. Category Tabs */}
       <div id="menu-showcase-section" className="flex justify-center overflow-x-auto no-scrollbar py-2">
         <div className="flex space-x-2 sm:space-x-4 liquid-glass rounded-full px-6 py-3 shadow-lg">
           {tabs.map((tab) => {
@@ -321,22 +300,20 @@ export const MenuPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Beverage Product Carousel */}
+      {/* Product Carousel */}
       <section className="bg-white rounded-3xl p-6 sm:p-12 shadow-xl border border-[#EAE3DB] relative overflow-hidden">
         <div className="flex justify-between items-center mb-8">
           <div>
             <h2 className="text-2xl sm:text-3xl font-black text-[#3e2723]">
-              {language === 'th' ? (currentCategory?.nameTh || currentCategory?.name) : (currentCategory?.name || currentCategory?.nameTh)}
+              {language === 'th' ? (currentCategory?.nameTh || currentCategory?.name) : language === 'zh' ? (currentCategory?.nameZh || currentCategory?.nameEn || currentCategory?.name) : (currentCategory?.nameEn || currentCategory?.name)}
             </h2>
-            <p className="text-gray-500 text-sm mt-1">เครื่องดื่มและเบเกอรีคัดสรรพิเศษเพื่อคุณโดยเฉพาะ</p>
+            <p className="text-gray-500 text-sm mt-1">{t.menu.title}</p>
           </div>
-          {/* Counter Badge */}
           <div className="bg-[#F4EFEB] text-[#3e2723] font-black px-4 py-1.5 rounded-full text-sm border border-[#EAE3DB]">
             {String(sliderIndex + 1).padStart(2, '0')} / {String(categoryItems.length).padStart(2, '0')}
           </div>
         </div>
 
-        {/* Carousel Container */}
         <div className="relative flex items-center justify-center py-6">
           <button
             onClick={prevSlider}
@@ -356,8 +333,10 @@ export const MenuPage: React.FC = () => {
               {categoryItems.map((item: any, idx: number) => {
                 const isCenter = idx === sliderIndex;
                 const displayName = language === 'th' 
-                  ? (item.nameTh || item.name || item.title || item.nameEn || item.productName || item.dishName || "เมนูแนะนำ")
-                  : (item.nameEn || item.name || item.title || item.nameTh || item.productName || item.dishName || "Featured Menu");
+                  ? (item.nameTh || item.name || item.nameEn || item.nameZh)
+                  : language === 'zh'
+                  ? (item.nameZh || item.nameEn || item.name || item.nameTh)
+                  : (item.nameEn || item.name || item.nameTh || item.nameZh);
 
                 return (
                   <div
@@ -382,14 +361,14 @@ export const MenuPage: React.FC = () => {
                       {isCenter && (
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-[2px] rounded-2xl">
                           <span className="bg-white text-[#3e2723] text-xs font-black px-4 py-2 rounded-full shadow-lg transform -translate-y-1">
-                            ดูเพิ่มเติม
+                            {t.menu.addToCart}
                           </span>
                         </div>
                       )}
                     </div>
 
                     <h3 className="text-base font-bold text-[#1E1E1E] mb-1 line-clamp-1">
-                      {item.name || item.title || item.nameTh || item.nameEn || item.productName || item.dishName || "เมนูแนะนำ"}
+                      {displayName}
                     </h3>
                     <div className="text-[#1E3A8A] font-black text-base">
                       ฿{item.basePrice}
@@ -423,140 +402,12 @@ export const MenuPage: React.FC = () => {
         />
       )}
 
-      {/* Footer / Info Section (Branch References Removed) */}
+      {/* Footer */}
       <footer className="mt-20">
         <div className="bg-[#5A483E] text-white rounded-t-3xl pt-16 pb-12 px-6 sm:px-12 shadow-2xl">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
-            
-            <div className="lg:col-span-2 space-y-4">
-              <h2 className="text-2xl font-black tracking-tight text-white">Porto Coffee</h2>
-              <p className="text-amber-100/80 text-sm leading-relaxed max-w-sm">
-                ร้านกาแฟพรีเมียมคัดสรรเมล็ดพันธุ์ชั้นดี พิถีพิถันทุกขั้นตอนการชง เพื่อส่งมอบช่วงเวลาแห่งความสุขในทุกแก้วให้กับคุณ
-              </p>
-              
-              <div className="flex space-x-3 pt-2">
-                <a href="#facebook" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="Facebook">
-                  <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </a>
-                <a href="#instagram" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="Instagram">
-                  <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
-                </a>
-                <a href="#youtube" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="YouTube">
-                  <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                </a>
-                <a href="#line" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="LINE">
-                  <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .336-.236.63-.63.63-.33 0-.585-.24-5.85-.63v-4.38c0-.345.27-.63.6-.63.345 0 .63.285.63.63v3.75zM8.52 13.509H7.26V8.108c0-.345.285-.63.63-.63.345 0 .63.285.63.63v4.771c0 .343-.285.63-.63.63zm-4.89-3.646h-1.74c-.345 0-.63-.285-.63-.63 0 .349.285.63.63.63h1.74c.345 0 .63.281.63.63 0 .345-.285.63-.63.63zm18.525 2.137C22.195 5.753 17.665 2 12 2S1.805 5.753 1.805 12c0 5.568 4.11 10.198 9.51 10.957.375.054.645.36 0 .735l-.555 2.01c-.105.375.105.765.48.87.12.03.24.045.36.045 2.61 0 4.965-1.02 6.705-2.67 3.96-1.5 6.78-5.385 6.78-9.945z"/>
-                  </svg>
-                </a>
-                <a href="#tiktok" onClick={(e) => e.preventDefault()} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#d97706] transition-colors" title="TikTok">
-                  <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-                    <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.22-2.35.72-4.73 2.51-6.23 1.79-1.51 4.17-2.1 6.5-1.62.01 1.36 0 2.72 0 4.08-1.13-.31-2.37-.15-3.35.48-.98.63-1.6 1.71-1.65 2.89-.05 1.18.49 2.33 1.45 2.98.96.65 2.19.78 3.27.35 1.08-.43 1.84-1.44 1.94-2.58.12-1.33.02-2.67.03-4.01V.02z"/>
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-4">ร่วมธุรกิจ</h4>
-              <ul className="space-y-2.5 text-sm text-amber-100/80">
-                <li 
-                  onClick={() => alert('เปิดรับสมัครแฟรนไชส์ Porto Coffee ร่วมเติบโตไปกับเราด้วยเงินลงทุนเริ่มต้นเพียง 150,000 บาท พร้อมทีมงานดูแลระบบและวัตถุดิบครบวงจร')}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  ร่วมธุรกิจแฟรนไชส์
-                </li>
-                <li 
-                  onClick={() => alert('สนใจเป็นคู่ค้าทางธุรกิจ / ซื้อวัตถุดิบเมล็ดกาแฟคั่วพรีเมียม / ติดต่อฝ่าย B2B ได้ที่ partner@portocoffee.com หรือโทร 02-123-4567')}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  สมัครเป็นคู่ค้าทางธุรกิจ
-                </li>
-                <li 
-                  onClick={() => alert('ร่วมงานกับ Porto Coffee ส่งเรซูเม่สมัครงานตำแหน่ง Barista, Store Manager, และ Food Developer ได้ที่ careers@portocoffee.com')}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  ร่วมงานกับเรา
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-4">เมนู Porto</h4>
-              <ul className="space-y-2.5 text-sm text-amber-100/80">
-                <li 
-                  onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('coffee') || c.nameTh?.includes('กาแฟ'));
-                    if (matched) setSelectedCategory(matched.id);
-                    const el = document.getElementById('menu-showcase-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  เมนูกาแฟ
-                </li>
-                <li 
-                  onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('tea') || c.nameTh?.includes('ชา'));
-                    if (matched) setSelectedCategory(matched.id);
-                    const el = document.getElementById('menu-showcase-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  เมนูชา
-                </li>
-                <li 
-                  onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('chocolate') || c.nameTh?.includes('ช็อกโกแลต'));
-                    if (matched) setSelectedCategory(matched.id);
-                    const el = document.getElementById('menu-showcase-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  เมนูช็อกโกแลต
-                </li>
-                <li 
-                  onClick={() => {
-                    const matched = categories.find((c: any) => c.name?.toLowerCase().includes('bakery') || c.nameTh?.includes('เบเกอรี'));
-                    if (matched) setSelectedCategory(matched.id);
-                    const el = document.getElementById('menu-showcase-section');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="cursor-pointer hover:underline hover:text-white transition-colors"
-                >
-                  เบเกอรีอบสด
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-amber-300 text-sm uppercase tracking-wider mb-4">ช่วยเหลือ</h4>
-              <ul className="space-y-2.5 text-sm text-amber-100/80">
-                <li onClick={() => window.dispatchEvent(new CustomEvent('open-member-modal'))} className="cursor-pointer hover:underline hover:text-white transition-colors">
-                  ตรวจสอบสิทธิ์สมาชิก
-                </li>
-                <li onClick={() => alert('ติดต่อฝ่ายบริการลูกค้า โทร 02-123-4567 (08:00 - 20:00 น.)')} className="cursor-pointer hover:underline hover:text-white transition-colors">
-                  ติดต่อเรา
-                </li>
-                <li onClick={() => alert('นโยบายความเป็นส่วนตัวของ Porto Coffee มุ่งมั่นปกป้องข้อมูลส่วนบุคคลของคุณตามกฎหมาย PDPA')} className="cursor-pointer hover:underline hover:text-white transition-colors">
-                  นโยบายความเป็นส่วนตัว
-                </li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div className="max-w-7xl mx-auto pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200/60">
-            <p>© 2026 Porto Coffee Co., Ltd. All rights reserved.</p>
-            <p className="mt-2 sm:mt-0">Crafted with ❤️ for Premium Coffee Lovers</p>
+          <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-xs text-amber-200/60">
+            <p>{t.footer.rights}</p>
+            <p className="mt-2 sm:mt-0">Crafted with ❤️ for Coffee Lovers</p>
           </div>
         </div>
       </footer>
