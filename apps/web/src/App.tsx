@@ -10,6 +10,8 @@ import { MenuPage } from './pages/MenuPage';
 import { OrderStatusPage } from './pages/OrderStatusPage';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 export class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
@@ -209,6 +211,8 @@ export function App() {
         <LanguageProvider>
           <CartProvider>
             <AppContent />
+            <SpeedInsights />
+            <Analytics />
           </CartProvider>
         </LanguageProvider>
       </BrowserRouter>
