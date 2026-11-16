@@ -47,23 +47,29 @@ export const AdminDashboardPage: React.FC = () => {
   const fetchData = async () => {
     try {
       const [configRes, promoRes, invRes, menuRes, tablesRes] = await Promise.all([
-        fetch('/api/admin/store/config'),
-        fetch('/api/admin/promotions'),
-        fetch('/api/admin/inventory'),
-        fetch('/api/admin/menu'),
-        fetch('/api/admin/tables')
+        fetch('/api/admin/store/config', { signal: AbortSignal.timeout(3000) }),
+        fetch('/api/admin/promotions', { signal: AbortSignal.timeout(3000) }),
+        fetch('/api/admin/inventory', { signal: AbortSignal.timeout(3000) }),
+        fetch('/api/admin/menu', { signal: AbortSignal.timeout(3000) }),
+        fetch('/api/admin/tables', { signal: AbortSignal.timeout(3000) })
       ]);
 
       if (configRes.status === 401 || promoRes.status === 401 || invRes.status === 401 || menuRes.status === 401 || tablesRes.status === 401) {
-        navigate('/admin/login');
-        return;
+        if (!localStorage.getItem('porto_admin_auth')) {
+          navigate('/admin/login');
+          return;
+        }
       }
 
-      const configData = await configRes.json();
-      const promoData = await promoRes.json();
-      const invData = await invRes.json();
-      const menuData = await menuRes.json();
-      const tablesData = await tablesRes.json();
+      const configData = configRes.ok ? await configRes.json() : { data: { name: 'Porto Coffee', status: 'OPEN', acceptOrders: true, announcement: '', scheduleText: '08:00 - 17:00' } };
+      const promoData = promoRes.ok ? await promoRes.json() : { data: [{ id: 'p-1', title: 'WELCOME1', description: '10% off your first order', discountType: 'PERCENT', discountValue: 10, isActive: true }] };
+      const invData = invRes.ok ? await invRes.json() : { data: [
+        { id: 'i-1', name: 'Espresso Beans', unit: 'g', stockQty: 8500, minLevel: 1000 },
+        { id: 'i-2', name: 'Fresh Milk', unit: 'ml', stockQty: 15000, minLevel: 2000 },
+        { id: 'i-3', name: 'Matcha Powder', unit: 'g', stockQty: 1500, minLevel: 200 }
+      ]};
+      const menuData = menuRes.ok ? await menuRes.json() : { data: [] };
+      const tablesData = tablesRes.ok ? await tablesRes.json() : { data: [{ id: 't-1', tableNo: '01', token: 'tok-1' }] };
 
       setStoreConfig(configData.data);
       setPromotions(promoData.data);
@@ -74,7 +80,16 @@ export const AdminDashboardPage: React.FC = () => {
         setItemCategoryId(menuData.data[0].id);
       }
     } catch (err) {
-      console.error(err);
+      console.warn('Admin API unreachable. Using mock dashboard data for Vercel showcase.');
+      setStoreConfig({ name: 'Porto Coffee', status: 'OPEN', acceptOrders: true, announcement: 'Welcome to Porto Coffee Vercel Demo!', scheduleText: '08:00 - 17:00' });
+      setPromotions([{ id: 'p-1', title: 'WELCOME1', description: '10% off your first order', discountType: 'PERCENT', discountValue: 10, isActive: true }]);
+      setInventory([
+        { id: 'i-1', name: 'Espresso Beans', unit: 'g', stockQty: 8500, minLevel: 1000 },
+        { id: 'i-2', name: 'Fresh Milk', unit: 'ml', stockQty: 15000, minLevel: 2000 },
+        { id: 'i-3', name: 'Matcha Powder', unit: 'g', stockQty: 1500, minLevel: 200 }
+      ]);
+      setMenuCategories([]);
+      setTables([{ id: 't-1', tableNo: '01', token: 'tok-1' }]);
     } finally {
       setLoading(false);
     }
@@ -242,7 +257,12 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch (e) {
+      // ignore
+    }
+    localStorage.removeItem('porto_admin_auth');
     navigate('/admin/login');
   };
 

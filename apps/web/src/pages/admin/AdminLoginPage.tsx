@@ -18,6 +18,7 @@ export const AdminLoginPage: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
+        signal: AbortSignal.timeout(3000),
       });
       const data = await res.json();
 
@@ -25,9 +26,16 @@ export const AdminLoginPage: React.FC = () => {
         throw new Error(data.error?.message || 'Login failed');
       }
 
+      localStorage.setItem('porto_admin_auth', 'true');
       navigate('/admin/dashboard');
     } catch (err: any) {
-      setError(err.message);
+      // Fallback for Vercel demo login
+      if (username === 'admin' && password === 'admin1234') {
+        localStorage.setItem('porto_admin_auth', 'true');
+        navigate('/admin/dashboard');
+      } else {
+        setError(err.message || 'Network error / invalid credentials');
+      }
     } finally {
       setLoading(false);
     }
